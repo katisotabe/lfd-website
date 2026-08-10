@@ -4,6 +4,17 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>LFD — Loksheen Fabrication & Development</title>
+<script>
+  // Applied immediately (before CSS paints) so the page never flashes the wrong theme.
+  // Dark is always the default — light mode only activates if the visitor chose it before.
+  (function() {
+    try {
+      if (localStorage.getItem('lfd-theme') === 'light') {
+        document.documentElement.classList.add('light-mode');
+      }
+    } catch (e) {}
+  })();
+</script>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
   *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -17,6 +28,7 @@
     --text-dim: #555;
   }
   html { scroll-behavior: smooth; }
+  html, body { background: var(--black); }
   body {
     background: var(--black);
     color: var(--white);
@@ -24,6 +36,29 @@
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
   }
+
+  /* ─── THEME (dark is default; .light-mode flips to light) ─── */
+  html.light-mode, html.light-mode body { background: #f5f5f5; }
+  html.light-mode nav.nav,
+  html.light-mode .page {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  /* real photography needs to be inverted back so colours stay true */
+  html.light-mode .project-photo {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  nav.nav, .page, .project-photo { transition: filter 0.25s ease; }
+
+  .theme-toggle {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: none; border: 1px solid var(--border);
+    color: var(--text-muted); font-family: inherit;
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; padding: 8px 14px; cursor: pointer;
+    margin-right: 16px; transition: color 0.2s, border-color 0.2s;
+  }
+  .theme-toggle:hover { color: var(--white); border-color: var(--muted); }
+  .theme-toggle-icon { font-size: 13px; line-height: 1; }
 
   /* ─── NAV ─── */
   .nav {
@@ -34,9 +69,14 @@
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
   }
-  .nav-logo { cursor: pointer; display: flex; align-items: center; height: 64px; padding: 16px 0; }
-  .nav-logo svg { height: 32px; width: auto; }
+  .nav-logo { cursor: pointer; display: flex; align-items: center; height: 64px; padding: 16px 0; flex-shrink: 0; }
+  .nav-logo svg { height: 40px; width: auto; }
   .nav-links { display: flex; gap: 0; list-style: none; }
+  .nav-right { display: flex; align-items: center; }
+  .nav-toggle-burger {
+    display: none; background: none; border: none; color: var(--white);
+    font-size: 22px; cursor: pointer; padding: 8px;
+  }
   .nav-links button {
     background: none; border: none; color: var(--text-muted);
     font-size: 12px; font-weight: 500; letter-spacing: 0.1em;
@@ -225,9 +265,72 @@
     padding: 32px 48px;
     display: flex; justify-content: space-between; align-items: center;
     border-top: 1px solid var(--border);
+    flex-wrap: wrap; gap: 16px;
   }
   .footer-logo { height: 24px; width: auto; opacity: 0.35; }
   .footer-text { font-size: 11px; color: #444; letter-spacing: 0.05em; }
+
+  /* ─── PROJECT PHOTOS ─── */
+  .project-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  /* ══════════════════════ RESPONSIVE ══════════════════════ */
+
+  /* Tablet / small laptop */
+  @media (max-width: 960px) {
+    .nav { padding: 0 28px; }
+    .home-hero, .services-hero, .projects-hero, .about-hero,
+    .services-cta, .projects-note, .about-split, .about-bottom,
+    .home-bottom { padding-left: 28px; padding-right: 28px; }
+    .services-grid, .projects-grid { grid-template-columns: 1fr; }
+    .projects-intro, .projects-note, .about-split, .about-bottom {
+      grid-template-columns: 1fr; gap: 40px; align-items: start;
+    }
+    .about-stats { flex-wrap: wrap; gap: 32px; }
+    .site-footer { padding: 28px; }
+  }
+
+  /* Mobile */
+  @media (max-width: 720px) {
+    .nav { padding: 0 18px; height: 60px; }
+    .page { padding-top: 60px; }
+    .nav-logo { height: 60px; }
+    .nav-logo svg { height: 30px; }
+    .nav-links {
+      position: fixed; top: 60px; left: 0; right: 0;
+      flex-direction: column; gap: 0;
+      background: rgba(8,8,8,0.98); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      max-height: 0; overflow: hidden; transition: max-height 0.25s ease;
+      z-index: 199;
+    }
+    html.light-mode .nav-links { background: rgba(8,8,8,0.98); }
+    .nav-links.open { max-height: 400px; }
+    .nav-links li { width: 100%; }
+    .nav-links button { width: 100%; text-align: left; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+    .nav-right { gap: 10px; }
+    .theme-toggle { margin-right: 0; padding: 8px 10px; }
+    .theme-toggle span.theme-toggle-label { display: none; }
+    .nav-cta { padding: 9px 14px; font-size: 10px; }
+    .nav-toggle-burger { display: block; }
+
+    .home-hero, .services-hero, .projects-hero, .about-hero,
+    .services-cta, .projects-note, .about-split, .about-bottom,
+    .home-bottom, .site-footer { padding-left: 20px; padding-right: 20px; }
+    .home-hero::before { display: none; }
+    .hero-heading { letter-spacing: -1.5px; }
+    .waitlist-row { grid-template-columns: 1fr; }
+    .wl-input:first-child { border-right: none; }
+    .services-cta { flex-direction: column; align-items: flex-start; gap: 24px; }
+    .services-cta-text { font-size: 22px; }
+    .site-footer { flex-direction: column; align-items: flex-start; }
+    .about-stats { gap: 24px; }
+    .about-stat-num { font-size: 36px; }
+  }
+
+  @media (max-width: 420px) {
+    .waitlist-form .wl-select, .wl-input { font-size: 12px; padding: 14px 16px; }
+    .hero-body { font-size: 14px; }
+  }
 </style>
 </head>
 <body>
@@ -236,13 +339,20 @@
   <div class="nav-logo" onclick="showPage('home')">
     <svg viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
   </div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="nav-links">
     <li><button onclick="showPage('home')" id="nav-home" class="active">Home</button></li>
     <li><button onclick="showPage('services')" id="nav-services">Services</button></li>
     <li><button onclick="showPage('projects')" id="nav-projects">Projects</button></li>
     <li><button onclick="showPage('about')" id="nav-about">About</button></li>
   </ul>
-  <button class="nav-cta" onclick="showPage('home'); setTimeout(()=>document.getElementById('waitlist-name').focus(),100)">Request Quote</button>
+  <div class="nav-right">
+    <button class="theme-toggle" id="theme-toggle" onclick="toggleTheme()">
+      <span class="theme-toggle-icon" id="theme-toggle-icon">☀</span>
+      <span class="theme-toggle-label" id="theme-toggle-label">Light</span>
+    </button>
+    <button class="nav-cta" onclick="showPage('home'); setTimeout(()=>document.getElementById('waitlist-name').focus(),100)">Request Quote</button>
+    <button class="nav-toggle-burger" id="nav-burger" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
+  </div>
 </nav>
 
 <!-- ══ HOME ══ -->
@@ -353,10 +463,7 @@
     <!-- VR6 4Motion -->
     <div class="project-card">
       <div class="project-visual">
-        <div class="project-visual-placeholder">
-          <div class="project-visual-icon">⚙</div>
-          <div class="project-visual-text">Photography coming soon</div>
-        </div>
+        <img class="project-photo" src="assets/vr6-golf.jpg" alt="MK3 Golf VR6 4Motion — rear view with roll cage and fabricated fuel cell" loading="lazy"/>
       </div>
       <div class="project-info">
         <div class="project-status active">Active Build</div>
@@ -374,10 +481,7 @@
     <!-- WRX STI -->
     <div class="project-card">
       <div class="project-visual">
-        <div class="project-visual-placeholder">
-          <div class="project-visual-icon">⚙</div>
-          <div class="project-visual-text">Photography coming soon</div>
-        </div>
+        <img class="project-photo" src="assets/wrx-sti.jpg" alt="Subaru WRX STI badge detail" loading="lazy"/>
       </div>
       <div class="project-info">
         <div class="project-status">Development</div>
@@ -420,9 +524,9 @@
     <div class="about-left">
       <div class="about-body">
         <p>Loksheen Fabrication and Development started in a driveway in Brakpan, Gauteng — not as a business plan, but as a genuine obsession with doing things properly.</p>
-        <p>What began as weekend builds alongside family grew into something more deliberate. A registered company. A set of standards. A belief that <strong>mechanical work done right is worth doing</strong> — and that the people building cars in this country deserve a workshop that takes the craft seriously.</p>
+        <p>What began as weekend builds alongside my father grew into something more deliberate. A registered company. A set of standards. A belief that <strong>mechanical work done right is worth doing</strong> — and that the people building cars in this country deserve a workshop that takes the craft seriously. (No shade)</p>
         <p>LFD is not a fast-turnaround shop. We take on limited work, give every build the full weight of our attention, and refuse to cut corners to hit a deadline. If that sounds like what you're looking for — we're probably the right fit.</p>
-        <p>We're based in Brakpan, Gauteng. We operate on weekends. We document the work. And we're only getting started.</p>
+        <p>We're based in Brakpan, Gauteng. We document the work. And we're only getting started.</p>
       </div>
     </div>
     <div class="about-right">
@@ -459,7 +563,7 @@
           <div class="about-stat-label">Brakpan, Gauteng</div>
         </div>
         <div>
-          <div class="about-stat-num">2024</div>
+          <div class="about-stat-num">2026</div>
           <div class="about-stat-label">Registered</div>
         </div>
       </div>
@@ -500,7 +604,31 @@
     document.getElementById('page-' + name).classList.add('active');
     document.getElementById('nav-' + name).classList.add('active');
     window.scrollTo(0, 0);
+    closeMobileMenu();
   }
+
+  function toggleTheme() {
+    const isLight = document.documentElement.classList.toggle('light-mode');
+    const icon = document.getElementById('theme-toggle-icon');
+    const label = document.getElementById('theme-toggle-label');
+    icon.textContent = isLight ? '☾' : '☀';
+    label.textContent = isLight ? 'Dark' : 'Light';
+    try { localStorage.setItem('lfd-theme', isLight ? 'light' : 'dark'); } catch (e) {}
+  }
+
+  function toggleMobileMenu() {
+    document.getElementById('nav-links').classList.toggle('open');
+  }
+  function closeMobileMenu() {
+    document.getElementById('nav-links').classList.remove('open');
+  }
+
+  // Sync the toggle button's icon/label with the theme applied at load time.
+  document.addEventListener('DOMContentLoaded', function() {
+    const isLight = document.documentElement.classList.contains('light-mode');
+    document.getElementById('theme-toggle-icon').textContent = isLight ? '☾' : '☀';
+    document.getElementById('theme-toggle-label').textContent = isLight ? 'Dark' : 'Light';
+  });
 
   async function submitWaitlist(e) {
     e.preventDefault();
