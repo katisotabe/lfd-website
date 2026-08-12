@@ -29,6 +29,33 @@
 <meta name="twitter:description" content="Independent automotive fabrication and performance development. We don't take on every job — we take on the right ones."/>
 <meta name="twitter:image" content="https://lfd.ltd/assets/og-image.jpg"/>
 
+<!-- Structured data: ties this site to the same business across social profiles -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "AutomotiveBusiness",
+  "name": "LFD",
+  "alternateName": "Loksheen Fabrication and Development",
+  "legalName": "Loksheen Fabrication and Development (Pty) Ltd",
+  "url": "https://lfd.ltd/",
+  "logo": "https://lfd.ltd/assets/og-image.jpg",
+  "email": "katiso@lfd.ltd",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Brakpan",
+    "addressRegion": "Gauteng",
+    "addressCountry": "ZA"
+  },
+  "sameAs": [
+    "https://www.instagram.com/loksheenracing",
+    "https://www.tiktok.com/@loksheenracing",
+    "https://www.facebook.com/loksheenracing",
+    "https://www.youtube.com/@loksheenracing",
+    "https://www.linkedin.com/company/loksheen-fabrication-and-development-pty-ltd/"
+  ]
+}
+</script>
+
 <script>
   // Applied immediately (before CSS paints) so the page never flashes the wrong theme.
   // Dark is always the default — light mode only activates if the visitor chose it before.
@@ -53,6 +80,14 @@
     --text-dim: #555;
   }
   html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
   html, body { background: var(--black); }
   body {
     background: var(--black);
@@ -65,14 +100,18 @@
   /* ─── THEME (dark is default; .light-mode flips to light) ─── */
   html.light-mode, html.light-mode body { background: #f5f5f5; }
   html.light-mode nav.nav,
-  html.light-mode .page {
+  html.light-mode .page,
+  html.light-mode .quote-modal-backdrop,
+  html.light-mode .lightbox-backdrop,
+  html.light-mode .privacy-modal-backdrop {
     filter: invert(1) hue-rotate(180deg);
   }
   /* real photography needs to be inverted back so colours stay true */
-  html.light-mode .project-photo {
+  html.light-mode .project-photo,
+  html.light-mode .lightbox-img {
     filter: invert(1) hue-rotate(180deg);
   }
-  nav.nav, .page, .project-photo { transition: filter 0.25s ease; }
+  nav.nav, .page, .project-photo, .quote-modal-backdrop, .lightbox-backdrop, .lightbox-img, .privacy-modal-backdrop { transition: filter 0.25s ease; }
 
   .theme-toggle {
     display: inline-flex; align-items: center; gap: 8px;
@@ -181,6 +220,15 @@
     font-family: inherit; appearance: none; width: 100%; cursor: pointer; transition: background 0.2s;
   }
   .wl-select:focus { background: #1e1e1e; color: var(--white); }
+  .wl-textarea {
+    background: var(--dim); border: none;
+    border-bottom: 1px solid var(--border);
+    color: var(--white); padding: 16px 20px;
+    font-size: 13px; outline: none; font-family: inherit; transition: background 0.2s;
+    resize: vertical; min-height: 90px; line-height: 1.6;
+  }
+  .wl-textarea:focus { background: #1e1e1e; }
+  .wl-textarea::placeholder { color: #444; }
   .wl-submit {
     background: var(--white); color: var(--black); border: none; padding: 18px 20px;
     font-size: 12px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
@@ -195,18 +243,74 @@
   .wl-success-num { font-size: 48px; font-weight: 900; font-style: italic; color: var(--white); letter-spacing: -2px; margin-bottom: 12px; }
   .wl-success-text { font-size: 14px; color: var(--text-muted); line-height: 1.7; }
 
+  /* ─── QUOTE MODAL ─── */
+  .quote-modal-backdrop {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    padding: 24px; overflow-y: auto;
+    align-items: flex-start; justify-content: center;
+  }
+  .quote-modal-backdrop.open { display: flex; }
+  .quote-modal {
+    background: var(--black); border: 1px solid var(--border);
+    max-width: 480px; width: 100%; margin: 48px auto;
+    padding: 40px; position: relative;
+    animation: quoteModalIn 0.25s ease;
+  }
+  @keyframes quoteModalIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .quote-modal-close {
+    position: absolute; top: 16px; right: 16px;
+    background: none; border: none; color: var(--text-muted);
+    font-size: 26px; line-height: 1; cursor: pointer; padding: 6px;
+    transition: color 0.2s;
+  }
+  .quote-modal-close:hover { color: var(--white); }
+  .quote-modal-head { margin-bottom: 24px; padding-right: 24px; }
+  .quote-modal-title {
+    font-size: 22px; font-weight: 800; font-style: italic;
+    letter-spacing: -0.5px; margin-bottom: 8px;
+  }
+  .quote-modal-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .quote-modal .waitlist-form, .quote-modal .wl-success { max-width: none; }
+  body.modal-open { overflow: hidden; }
+
+  /* ─── PRIVACY MODAL ─── */
+  .privacy-modal-backdrop {
+    display: none; position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.7); backdrop-filter: blur(6px);
+    padding: 24px; overflow-y: auto;
+    align-items: flex-start; justify-content: center;
+  }
+  .privacy-modal-backdrop.open { display: flex; }
+  .privacy-modal {
+    background: var(--black); border: 1px solid var(--border);
+    max-width: 520px; width: 100%; margin: 48px auto;
+    padding: 40px; position: relative;
+    animation: quoteModalIn 0.25s ease;
+  }
+  .privacy-modal-body p {
+    font-size: 13px; color: var(--text-muted); line-height: 1.75; margin-top: 16px;
+  }
+  .privacy-modal-body p:first-child { margin-top: 20px; }
+  .privacy-modal-body a { color: var(--white); }
+  .footer-privacy-link {
+    background: none; border: none; color: #555; font-size: 11px;
+    letter-spacing: 0.08em; text-transform: uppercase; cursor: pointer;
+    font-family: inherit; padding: 4px; transition: color 0.2s;
+  }
+  .footer-privacy-link:hover, .footer-privacy-link:focus-visible { color: var(--white); }
+
   /* FOOTER */
   .home-bottom {
     padding: 32px 48px; border-top: 1px solid var(--border);
     display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 16px;
   }
   .home-bottom-left { font-size: 11px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; }
-  .home-bottom-right { display: flex; gap: 28px; }
-  .home-bottom-right a {
-    font-size: 11px; color: #555; text-decoration: none;
-    letter-spacing: 0.08em; text-transform: uppercase; transition: color 0.2s;
-  }
-  .home-bottom-right a:hover { color: #999; }
+  .home-bottom-right { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
 
   /* ─── SERVICES ─── */
   .services-hero { padding: 80px 48px 64px; border-bottom: 1px solid var(--border); }
@@ -215,12 +319,24 @@
   .page-title em { color: var(--muted); }
   .page-subtitle { font-size: 14px; color: var(--text-muted); line-height: 1.75; max-width: 480px; margin-top: 24px; }
   .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border-bottom: 1px solid var(--border); }
-  .service-card { background: var(--black); padding: 48px 40px; transition: background 0.2s; }
+  .service-card {
+    background: var(--black); padding: 48px 40px; transition: background 0.2s;
+    border: none; text-align: left; width: 100%; display: block;
+    font-family: inherit; cursor: pointer; color: inherit;
+  }
   .service-card:hover { background: var(--dim); }
+  .service-card:focus-visible { outline: 2px solid var(--white); outline-offset: -2px; background: var(--dim); }
   .service-num { font-size: 11px; color: #333; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 24px; }
   .service-name { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 14px; letter-spacing: -0.3px; }
   .service-desc { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
-  .service-tag { display: inline-block; margin-top: 28px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #333; border: 1px solid #222; padding: 5px 10px; }
+  .service-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 28px; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: #666; border: 1px solid #222; padding: 5px 10px; transition: color 0.2s, border-color 0.2s;
+  }
+  .service-card:hover .service-tag, .service-card:focus-visible .service-tag { color: var(--white); border-color: var(--muted); }
+  .service-tag-arrow { transition: transform 0.2s; }
+  .service-card:hover .service-tag-arrow, .service-card:focus-visible .service-tag-arrow { transform: translateX(3px); }
   .services-cta { padding: 64px 48px; display: flex; justify-content: space-between; align-items: center; }
   .services-cta-text { font-size: 28px; font-weight: 800; font-style: italic; letter-spacing: -0.5px; }
   .services-cta-text em { color: var(--muted); }
@@ -242,6 +358,62 @@
   }
   .project-visual-icon { font-size: 32px; color: #222; }
   .project-visual-text { font-size: 10px; color: #333; letter-spacing: 0.15em; text-transform: uppercase; }
+
+  /* ─── PROJECT GALLERY CONTROLS ─── */
+  .gallery-arrow, .gallery-expand {
+    position: absolute; z-index: 2;
+    width: 34px; height: 34px; display: flex; align-items: center; justify-content: center;
+    background: rgba(8,8,8,0.55); border: 1px solid rgba(255,255,255,0.22); color: #fff;
+    cursor: pointer; opacity: 0.5; transition: opacity 0.2s, background 0.2s; border-radius: 3px;
+  }
+  .gallery-arrow svg, .gallery-expand svg { width: 16px; height: 16px; }
+  .gallery-arrow:hover, .gallery-arrow:focus-visible,
+  .gallery-expand:hover, .gallery-expand:focus-visible { opacity: 1; background: rgba(8,8,8,0.85); }
+  .gallery-arrow:focus-visible, .gallery-expand:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+  .gallery-arrow-prev { left: 10px; top: 50%; transform: translateY(-50%); }
+  .gallery-arrow-next { right: 10px; top: 50%; transform: translateY(-50%); }
+  .gallery-expand { top: 10px; right: 10px; }
+  .gallery-arrow[hidden] { display: none; }
+  .gallery-dots {
+    position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+    display: flex; gap: 5px; z-index: 2;
+  }
+  .gallery-dots[hidden] { display: none; }
+  .gallery-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,0.35); }
+  .gallery-dot.active { background: #fff; }
+
+  /* ─── LIGHTBOX ─── */
+  .lightbox-backdrop {
+    display: none; position: fixed; inset: 0; z-index: 600;
+    background: rgba(0,0,0,0.92); padding: 60px 24px 24px; overflow-y: auto;
+    align-items: flex-start; justify-content: center;
+  }
+  .lightbox-backdrop.open { display: flex; }
+  .lightbox-content { max-width: 920px; width: 100%; margin: auto; position: relative; }
+  .lightbox-close {
+    position: absolute; top: -42px; right: 0; background: none; border: none;
+    color: #fff; font-size: 28px; line-height: 1; cursor: pointer; padding: 6px;
+  }
+  .lightbox-img-wrap {
+    position: relative; width: 100%; aspect-ratio: 16/10; background: #000; overflow: hidden;
+  }
+  .lightbox-img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .lightbox-arrow {
+    position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+    width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.25); color: #fff;
+    cursor: pointer; border-radius: 3px; transition: background 0.2s;
+  }
+  .lightbox-arrow:hover, .lightbox-arrow:focus-visible { background: rgba(255,255,255,0.2); }
+  .lightbox-arrow:focus-visible { outline: 2px solid #fff; outline-offset: 1px; }
+  .lightbox-arrow[hidden] { display: none; }
+  .lightbox-arrow-prev { left: 12px; }
+  .lightbox-arrow-next { right: 12px; }
+  .lightbox-counter {
+    margin-top: 14px; text-align: center; font-size: 11px;
+    letter-spacing: 0.1em; text-transform: uppercase; color: #888;
+  }
+
   .project-info { padding: 32px 36px 40px; }
   .project-status {
     display: inline-block; font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase;
@@ -292,8 +464,19 @@
     border-top: 1px solid var(--border);
     flex-wrap: wrap; gap: 16px;
   }
+  .footer-brand { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
   .footer-logo { height: 24px; width: auto; opacity: 0.35; }
   .footer-text { font-size: 11px; color: #444; letter-spacing: 0.05em; }
+  .footer-social { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  .footer-social a { color: #555; }
+  .social-icon {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 30px; height: 30px; color: #555; transition: color 0.2s, background 0.2s;
+    border-radius: 4px;
+  }
+  .social-icon svg { width: 17px; height: 17px; }
+  .social-icon:hover { color: var(--white); background: rgba(255,255,255,0.06); }
+  .social-icon:focus-visible { outline: 2px solid var(--white); outline-offset: 1px; color: var(--white); }
 
   /* ─── PROJECT PHOTOS ─── */
   .project-photo { width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -375,22 +558,28 @@
       <span class="theme-toggle-icon" id="theme-toggle-icon">☀</span>
       <span class="theme-toggle-label" id="theme-toggle-label">Light</span>
     </button>
-    <button class="nav-cta" onclick="showPage('home'); setTimeout(()=>document.getElementById('waitlist-name').focus(),100)">Request Quote</button>
+    <button class="nav-cta" onclick="openQuoteModal()">Request Quote</button>
     <button class="nav-toggle-burger" id="nav-burger" onclick="toggleMobileMenu()" aria-label="Menu">☰</button>
   </div>
 </nav>
 
-<!-- ══ HOME ══ -->
-<div class="page active" id="page-home">
-  <div class="home-hero">
-    <div class="hero-tag"><span class="hero-tag-dot"></span>Loksheen Fabrication &amp; Development</div>
-    <h1 class="hero-heading">Not for<br><em>everyone.</em></h1>
-    <p class="hero-body">LFD is an independent automotive fabrication and performance development workshop. We don't take on every job — we take on the right ones. If you know, you know.</p>
+<!-- ══ QUOTE MODAL ══ -->
+<div class="quote-modal-backdrop" id="quote-modal-backdrop" onclick="if(event.target===this) closeQuoteModal()">
+  <div class="quote-modal" role="dialog" aria-modal="true" aria-labelledby="quote-modal-title-el">
+    <button class="quote-modal-close" onclick="closeQuoteModal()" aria-label="Close">&times;</button>
+    <div class="quote-modal-head">
+      <div class="quote-modal-title" id="quote-modal-title-el">Request a Quote</div>
+      <p class="quote-modal-sub">Tell us about the project — we'll reach out within 2 business days.</p>
+    </div>
 
     <form class="waitlist-form" id="waitlist-form" onsubmit="submitWaitlist(event)">
       <div class="waitlist-row">
         <input class="wl-input" id="waitlist-name" name="name" type="text" placeholder="Full name" required />
         <input class="wl-input" name="email" type="email" placeholder="Email address" required />
+      </div>
+      <div class="waitlist-row">
+        <input class="wl-input" name="phone" type="tel" placeholder="Phone / WhatsApp (optional)" />
+        <input class="wl-input" name="vehicle" type="text" placeholder="Vehicle (optional)" />
       </div>
       <select class="wl-select" name="interest" required>
         <option value="">I'm interested in...</option>
@@ -399,25 +588,65 @@
         <option value="Component Sourcing">Component Sourcing</option>
         <option value="General Enquiry">General Enquiry</option>
       </select>
+      <textarea class="wl-textarea" name="message" placeholder="Tell us about the project — current state of the car, what you're after, timeline." required></textarea>
       <input type="hidden" name="_subject" value="New LFD Enquiry" />
       <button type="submit" class="wl-submit">Send Enquiry</button>
     </form>
 
     <div class="wl-success" id="wl-success">
       <div class="wl-success-num">✓</div>
-      <div class="wl-success-text">Enquiry received. We'll be in touch — no spam, no noise.</div>
+      <div class="wl-success-text">Enquiry received. We'll be in touch within 2 business days — no spam, no noise.</div>
     </div>
+  </div>
+</div>
 
-    <p class="waitlist-note" id="waitlist-note">We'll reach out. No newsletters. No noise.</p>
+<!-- ══ PROJECT GALLERY LIGHTBOX ══ -->
+<div class="lightbox-backdrop" id="lightbox-backdrop" onclick="if(event.target===this) closeLightbox()">
+  <div class="lightbox-content" role="dialog" aria-modal="true" aria-label="Project photo gallery">
+    <button type="button" class="lightbox-close" onclick="closeLightbox()" aria-label="Close gallery">&times;</button>
+    <div class="lightbox-img-wrap">
+      <img class="lightbox-img" id="lightbox-img" src="" alt=""/>
+      <button type="button" class="lightbox-arrow lightbox-arrow-prev" id="lightbox-prev" aria-label="Previous photo" onclick="lightboxShift(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l-7 7 7 7"/></svg></button>
+      <button type="button" class="lightbox-arrow lightbox-arrow-next" id="lightbox-next" aria-label="Next photo" onclick="lightboxShift(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5l7 7-7 7"/></svg></button>
+    </div>
+    <div class="lightbox-counter" id="lightbox-counter" aria-live="polite">Photo 1 of 1</div>
+  </div>
+</div>
+
+<!-- ══ PRIVACY NOTICE ══ -->
+<div class="privacy-modal-backdrop" id="privacy-modal-backdrop" onclick="if(event.target===this) closePrivacyModal()">
+  <div class="privacy-modal" role="dialog" aria-modal="true" aria-labelledby="privacy-modal-title-el">
+    <button type="button" class="quote-modal-close" onclick="closePrivacyModal()" aria-label="Close">&times;</button>
+    <div class="quote-modal-title" id="privacy-modal-title-el">Privacy Notice</div>
+    <div class="privacy-modal-body">
+      <p>We only collect what you give us through the quote form — your name, contact details, vehicle, and project description — and we use it for one thing: preparing and sending your quote.</p>
+      <p>That information passes through Formspree (the form itself), and once we're in touch, may sit in Zoho (our email) or Stub.africa (our quoting and invoicing tool). We don't sell it, and we don't share it with anyone outside of running the business.</p>
+      <p>We don't hold on to it beyond what's needed. Once your quote has been sent, it's not kept on hand afterward.</p>
+      <p>Questions, or want your info removed sooner? Email <a href="mailto:katiso@lfd.ltd">katiso@lfd.ltd</a>.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ══ HOME ══ -->
+<div class="page active" id="page-home">
+  <div class="home-hero">
+    <div class="hero-tag"><span class="hero-tag-dot"></span>Loksheen Fabrication &amp; Development</div>
+    <h1 class="hero-heading">Not for<br><em>everyone.</em></h1>
+    <p class="hero-body">LFD is an independent automotive fabrication and performance development workshop. We don't take on every job — we take on the right ones. If you know, you know.</p>
+
+    <button class="wl-submit" style="max-width:280px; padding:18px 32px;" onclick="openQuoteModal()">Request a Quote</button>
+    <p class="waitlist-note">We'll reach out within 2 business days. No newsletters. No noise.</p>
   </div>
 
   <div class="home-bottom">
-    <div class="home-bottom-left">Brakpan, Gauteng</div>
+    <div class="home-bottom-left">Brakpan, Gauteng · <button type="button" class="footer-privacy-link" style="text-transform:uppercase; letter-spacing:0.08em;" onclick="openPrivacyModal()">Privacy</button></div>
     <div class="home-bottom-right">
-      <a href="https://www.instagram.com/loksheenracing?igsh=NTR1aWhhOXB1OW43" target="_blank">Instagram</a>
-      <a href="https://www.facebook.com/share/19LFaTvzxD/?mibextid=wwXIfr" target="_blank">Facebook</a>
-      <a href="https://youtube.com/@loksheenracing?si=6kBQMRgtwMqxBltC" target="_blank">YouTube</a>
-      <a href="mailto:katiso@lfd.ltd">katiso@lfd.ltd</a>
+      <a href="https://www.instagram.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.tiktok.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3.5v11a3.5 3.5 0 1 1-3.5-3.5c.34 0 .67.04 1 .12"/><path d="M15 3.5c.4 2.4 2 4.2 4.3 4.6"/></svg></a>
+      <a href="https://www.facebook.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M14 8.3h-1.3A1.7 1.7 0 0 0 11 10v2m0 0H9.2m1.8 0v5.7"/></svg></a>
+      <a href="https://www.youtube.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10.3 9.6l5 2.4-5 2.4z" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.linkedin.com/company/loksheen-fabrication-and-development-pty-ltd/" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.1" cy="8.3" r="0.7" fill="currentColor" stroke="none"/><path d="M8.1 11v6M12 17v-4.2a2 2 0 0 1 4 0V17"/></svg></a>
+      <a href="mailto:katiso@lfd.ltd" class="social-icon" aria-label="Email katiso@lfd.ltd"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M4 6.5l8 6 8-6"/></svg></a>
     </div>
   </div>
 </div>
@@ -431,42 +660,51 @@
   </div>
 
   <div class="services-grid">
-    <div class="service-card">
+    <button type="button" class="service-card" onclick="openQuoteModal('Custom Fabrication')">
       <div class="service-num">01</div>
       <div class="service-name">Custom Fabrication</div>
       <div class="service-desc">Roll cages, boost pipes, custom control arms, subframes. If it needs to be measured, cut, and welded to fit a specific build — we build it in-house. No outsourcing, no compromise.</div>
-      <div class="service-tag">Quote on request</div>
-    </div>
-    <div class="service-card">
+      <div class="service-tag">Quote on request <span class="service-tag-arrow" aria-hidden="true">→</span></div>
+    </button>
+    <button type="button" class="service-card" onclick="openQuoteModal('Performance Build & Development')">
       <div class="service-num">02</div>
       <div class="service-name">Performance Builds &amp; Development</div>
       <div class="service-desc">Focused platform builds, custom assembly, and the hands-on mechanical work required to make a proper car move. Built around a specific vision, not a generic spec sheet.</div>
-      <div class="service-tag">Consultation required</div>
-    </div>
-    <div class="service-card">
+      <div class="service-tag">Consultation required <span class="service-tag-arrow" aria-hidden="true">→</span></div>
+    </button>
+    <button type="button" class="service-card" onclick="openQuoteModal('Component Sourcing')">
       <div class="service-num">03</div>
       <div class="service-name">Component Sourcing</div>
       <div class="service-desc">Hard-to-find parts, specific platform components, and the right hardware to keep a build moving without shortcuts. We hunt down what you need so the momentum doesn't stop.</div>
-      <div class="service-tag">Get in touch</div>
-    </div>
-    <div class="service-card" style="display:flex; flex-direction:column; justify-content:space-between;">
+      <div class="service-tag">Get in touch <span class="service-tag-arrow" aria-hidden="true">→</span></div>
+    </button>
+    <div class="service-card" style="display:flex; flex-direction:column; justify-content:space-between; cursor:default;">
       <div>
         <div class="service-num">—</div>
         <div class="service-name" style="color:#2a2a2a;">Not sure where to start?</div>
         <div class="service-desc" style="margin-top:8px;">Describe your build or what you're trying to achieve. We'll tell you honestly whether we're the right fit and what it would take.</div>
       </div>
-      <button class="wl-submit" style="margin-top:32px;" onclick="showPage('home'); setTimeout(()=>document.getElementById('waitlist-name').focus(),100)">Send Enquiry</button>
+      <button type="button" class="wl-submit" style="margin-top:32px;" onclick="openQuoteModal('General Enquiry')">Send Enquiry</button>
     </div>
   </div>
 
   <div class="services-cta">
     <div class="services-cta-text">Have a build in mind?<br><em>Let's talk.</em></div>
-    <button class="nav-cta" style="padding:14px 28px; font-size:12px;" onclick="showPage('home'); setTimeout(()=>document.getElementById('waitlist-name').focus(),100)">Request Quote →</button>
+    <button class="nav-cta" style="padding:14px 28px; font-size:12px;" onclick="openQuoteModal()">Request Quote →</button>
   </div>
 
   <footer class="site-footer">
-    <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
-    <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd</div>
+    <div class="footer-brand">
+      <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
+      <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd · <button type="button" class="footer-privacy-link" onclick="openPrivacyModal()">Privacy</button></div>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.tiktok.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3.5v11a3.5 3.5 0 1 1-3.5-3.5c.34 0 .67.04 1 .12"/><path d="M15 3.5c.4 2.4 2 4.2 4.3 4.6"/></svg></a>
+      <a href="https://www.facebook.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M14 8.3h-1.3A1.7 1.7 0 0 0 11 10v2m0 0H9.2m1.8 0v5.7"/></svg></a>
+      <a href="https://www.youtube.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10.3 9.6l5 2.4-5 2.4z" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.linkedin.com/company/loksheen-fabrication-and-development-pty-ltd/" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.1" cy="8.3" r="0.7" fill="currentColor" stroke="none"/><path d="M8.1 11v6M12 17v-4.2a2 2 0 0 1 4 0V17"/></svg></a>
+    </div>
   </footer>
 </div>
 
@@ -487,8 +725,12 @@
   <div class="projects-grid">
     <!-- VR6 4Motion -->
     <div class="project-card">
-      <div class="project-visual">
-        <img class="project-photo" src="assets/vr6-golf.jpg" alt="MK3 Golf VR6 4Motion — rear view with roll cage and fabricated fuel cell" loading="lazy"/>
+      <div class="project-visual" id="gallery-vr6">
+        <img class="project-photo" id="gallery-vr6-img" src="assets/vr6-golf.jpg" alt="MK3 Golf VR6 4Motion — rear view with roll cage and fabricated fuel cell" loading="lazy"/>
+        <button type="button" class="gallery-arrow gallery-arrow-prev" aria-label="Previous photo" onclick="shiftGallery('vr6',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="gallery-arrow gallery-arrow-next" aria-label="Next photo" onclick="shiftGallery('vr6',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5l7 7-7 7"/></svg></button>
+        <div class="gallery-dots" id="gallery-vr6-dots" aria-hidden="true"></div>
+        <button type="button" class="gallery-expand" aria-label="View MK3 Golf VR6 4Motion gallery, larger" onclick="openLightbox('vr6')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg></button>
       </div>
       <div class="project-info">
         <div class="project-status active">Active Build</div>
@@ -505,8 +747,12 @@
 
     <!-- WRX STI -->
     <div class="project-card">
-      <div class="project-visual">
-        <img class="project-photo" src="assets/wrx-sti.jpg" alt="Subaru WRX STI badge detail" loading="lazy"/>
+      <div class="project-visual" id="gallery-wrx">
+        <img class="project-photo" id="gallery-wrx-img" src="assets/wrx-sti.jpg" alt="Subaru WRX STI badge detail" loading="lazy"/>
+        <button type="button" class="gallery-arrow gallery-arrow-prev" aria-label="Previous photo" onclick="shiftGallery('wrx',-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="gallery-arrow gallery-arrow-next" aria-label="Next photo" onclick="shiftGallery('wrx',1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5l7 7-7 7"/></svg></button>
+        <div class="gallery-dots" id="gallery-wrx-dots" aria-hidden="true"></div>
+        <button type="button" class="gallery-expand" aria-label="View Subaru WRX STI gallery, larger" onclick="openLightbox('wrx')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v5M15 4h5v5M9 20H4v-5M15 20h5v-5"/></svg></button>
       </div>
       <div class="project-info">
         <div class="project-status">Development</div>
@@ -533,8 +779,17 @@
   </div>
 
   <footer class="site-footer">
-    <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
-    <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd</div>
+    <div class="footer-brand">
+      <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
+      <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd · <button type="button" class="footer-privacy-link" onclick="openPrivacyModal()">Privacy</button></div>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.tiktok.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3.5v11a3.5 3.5 0 1 1-3.5-3.5c.34 0 .67.04 1 .12"/><path d="M15 3.5c.4 2.4 2 4.2 4.3 4.6"/></svg></a>
+      <a href="https://www.facebook.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M14 8.3h-1.3A1.7 1.7 0 0 0 11 10v2m0 0H9.2m1.8 0v5.7"/></svg></a>
+      <a href="https://www.youtube.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10.3 9.6l5 2.4-5 2.4z" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.linkedin.com/company/loksheen-fabrication-and-development-pty-ltd/" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.1" cy="8.3" r="0.7" fill="currentColor" stroke="none"/><path d="M8.1 11v6M12 17v-4.2a2 2 0 0 1 4 0V17"/></svg></a>
+    </div>
   </footer>
 </div>
 
@@ -617,8 +872,17 @@
   </div>
 
   <footer class="site-footer">
-    <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
-    <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd</div>
+    <div class="footer-brand">
+      <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
+      <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd · <button type="button" class="footer-privacy-link" onclick="openPrivacyModal()">Privacy</button></div>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.tiktok.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3.5v11a3.5 3.5 0 1 1-3.5-3.5c.34 0 .67.04 1 .12"/><path d="M15 3.5c.4 2.4 2 4.2 4.3 4.6"/></svg></a>
+      <a href="https://www.facebook.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M14 8.3h-1.3A1.7 1.7 0 0 0 11 10v2m0 0H9.2m1.8 0v5.7"/></svg></a>
+      <a href="https://www.youtube.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10.3 9.6l5 2.4-5 2.4z" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.linkedin.com/company/loksheen-fabrication-and-development-pty-ltd/" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.1" cy="8.3" r="0.7" fill="currentColor" stroke="none"/><path d="M8.1 11v6M12 17v-4.2a2 2 0 0 1 4 0V17"/></svg></a>
+    </div>
   </footer>
 </div>
 
@@ -648,6 +912,178 @@
     document.getElementById('nav-links').classList.remove('open');
   }
 
+  // ─── PROJECT GALLERIES ───
+  const PROJECT_GALLERIES = {
+    vr6: {
+      name: 'MK3 Golf VR6 4Motion',
+      images: [
+        { src: 'assets/vr6-golf.jpg', alt: 'MK3 Golf VR6 4Motion — rear view with roll cage and fabricated fuel cell' },
+        { src: 'assets/vr6-subframe.jpg', alt: 'Custom fabricated tubular subframe for the AWD conversion, housing the differential and driveline' },
+        { src: 'assets/vr6-interior.jpg', alt: 'MK3 Golf interior — roll cage, racing seat, and harness bar' },
+        { src: 'assets/vr6-engine-bay.jpg', alt: 'MK3 Golf engine bay — Precision turbo and piping installation' }
+      ],
+      current: 0
+    },
+    wrx: {
+      name: 'Subaru WRX STI',
+      images: [
+        { src: 'assets/wrx-sti.jpg', alt: 'Subaru WRX STI badge detail' },
+        { src: 'assets/wrx-front.jpg', alt: 'Subaru WRX STI front view at night, license plate blurred for privacy' },
+        { src: 'assets/wrx-turbo.jpg', alt: 'Forced Performance Green turbocharger for the Subaru build' },
+        { src: 'assets/wrx-parts-box.jpg', alt: 'Box of sourced components for the Subaru build — Wiseco pistons, ARP hardware, ACL oil pump' }
+      ],
+      current: 0
+    }
+  };
+
+  function renderGalleryDots(key) {
+    const g = PROJECT_GALLERIES[key];
+    const dotsEl = document.getElementById('gallery-' + key + '-dots');
+    if (!dotsEl) return;
+    if (g.images.length <= 1) { dotsEl.hidden = true; dotsEl.innerHTML = ''; return; }
+    dotsEl.hidden = false;
+    dotsEl.innerHTML = g.images.map((_, i) =>
+      `<span class="gallery-dot${i === g.current ? ' active' : ''}"></span>`
+    ).join('');
+  }
+
+  function initGalleries() {
+    Object.keys(PROJECT_GALLERIES).forEach(key => {
+      const g = PROJECT_GALLERIES[key];
+      const card = document.getElementById('gallery-' + key);
+      if (!card) return;
+      const prevBtn = card.querySelector('.gallery-arrow-prev');
+      const nextBtn = card.querySelector('.gallery-arrow-next');
+      if (g.images.length <= 1) {
+        if (prevBtn) prevBtn.hidden = true;
+        if (nextBtn) nextBtn.hidden = true;
+      }
+      renderGalleryDots(key);
+    });
+  }
+
+  function shiftGallery(key, dir) {
+    const g = PROJECT_GALLERIES[key];
+    if (!g || g.images.length <= 1) return;
+    g.current = (g.current + dir + g.images.length) % g.images.length;
+    const img = document.getElementById('gallery-' + key + '-img');
+    img.src = g.images[g.current].src;
+    img.alt = g.images[g.current].alt;
+    renderGalleryDots(key);
+  }
+
+  // ─── LIGHTBOX ───
+  let lightboxKey = null;
+  let lightboxTriggerEl = null;
+
+  function renderLightbox() {
+    const g = PROJECT_GALLERIES[lightboxKey];
+    const img = document.getElementById('lightbox-img');
+    img.src = g.images[g.current].src;
+    img.alt = g.images[g.current].alt;
+    document.getElementById('lightbox-counter').textContent =
+      `${g.name} — Photo ${g.current + 1} of ${g.images.length}`;
+    const prevBtn = document.getElementById('lightbox-prev');
+    const nextBtn = document.getElementById('lightbox-next');
+    const multi = g.images.length > 1;
+    prevBtn.hidden = !multi;
+    nextBtn.hidden = !multi;
+  }
+
+  function openLightbox(key) {
+    lightboxKey = key;
+    lightboxTriggerEl = document.activeElement;
+    renderLightbox();
+    const backdrop = document.getElementById('lightbox-backdrop');
+    backdrop.classList.add('open');
+    document.body.classList.add('modal-open');
+    setTimeout(() => document.querySelector('.lightbox-close').focus(), 50);
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox-backdrop').classList.remove('open');
+    document.body.classList.remove('modal-open');
+    lightboxKey = null;
+    if (lightboxTriggerEl) { lightboxTriggerEl.focus(); lightboxTriggerEl = null; }
+  }
+
+  function lightboxShift(dir) {
+    if (!lightboxKey) return;
+    const g = PROJECT_GALLERIES[lightboxKey];
+    if (g.images.length <= 1) return;
+    g.current = (g.current + dir + g.images.length) % g.images.length;
+    renderLightbox();
+    // keep the thumbnail on the projects grid in sync
+    const img = document.getElementById('gallery-' + lightboxKey + '-img');
+    if (img) { img.src = g.images[g.current].src; img.alt = g.images[g.current].alt; }
+    renderGalleryDots(lightboxKey);
+  }
+
+  document.addEventListener('DOMContentLoaded', initGalleries);
+
+  // ─── PRIVACY MODAL ───
+  let privacyTriggerEl = null;
+  function openPrivacyModal() {
+    privacyTriggerEl = document.activeElement;
+    document.getElementById('privacy-modal-backdrop').classList.add('open');
+    document.body.classList.add('modal-open');
+    closeMobileMenu();
+    setTimeout(() => document.querySelector('#privacy-modal-backdrop .quote-modal-close').focus(), 50);
+  }
+  function closePrivacyModal() {
+    document.getElementById('privacy-modal-backdrop').classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (privacyTriggerEl) { privacyTriggerEl.focus(); privacyTriggerEl = null; }
+  }
+
+  let quoteModalTriggerEl = null;
+
+  function openQuoteModal(interest) {
+    const backdrop = document.getElementById('quote-modal-backdrop');
+    const form = document.getElementById('waitlist-form');
+    const success = document.getElementById('wl-success');
+    quoteModalTriggerEl = document.activeElement;
+    // reset to a fresh form each time it's opened
+    form.reset();
+    if (interest) form.querySelector('[name="interest"]').value = interest;
+    form.style.display = 'flex';
+    success.style.display = 'none';
+    backdrop.classList.add('open');
+    document.body.classList.add('modal-open');
+    closeMobileMenu();
+    setTimeout(() => document.getElementById('waitlist-name').focus(), 100);
+  }
+  function closeQuoteModal() {
+    document.getElementById('quote-modal-backdrop').classList.remove('open');
+    document.body.classList.remove('modal-open');
+    if (quoteModalTriggerEl) { quoteModalTriggerEl.focus(); quoteModalTriggerEl = null; }
+  }
+  document.addEventListener('keydown', function(e) {
+    const lightboxOpen = document.getElementById('lightbox-backdrop').classList.contains('open');
+    const privacyOpen = document.getElementById('privacy-modal-backdrop').classList.contains('open');
+
+    if (e.key === 'Escape') {
+      if (lightboxOpen) closeLightbox();
+      else if (privacyOpen) closePrivacyModal();
+      else closeQuoteModal();
+    }
+
+    if (lightboxOpen && e.key === 'ArrowLeft') lightboxShift(-1);
+    if (lightboxOpen && e.key === 'ArrowRight') lightboxShift(1);
+
+    if (e.key === 'Tab') {
+      const backdropId = lightboxOpen ? 'lightbox-backdrop' : (privacyOpen ? 'privacy-modal-backdrop' : 'quote-modal-backdrop');
+      const backdrop = document.getElementById(backdropId);
+      if (!backdrop.classList.contains('open')) return;
+      const focusables = Array.from(backdrop.querySelectorAll('button, input, select, textarea, [href]'))
+        .filter(el => el.offsetParent !== null);
+      if (!focusables.length) return;
+      const first = focusables[0], last = focusables[focusables.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
+
   // Sync the toggle button's icon/label with the theme applied at load time.
   document.addEventListener('DOMContentLoaded', function() {
     const isLight = document.documentElement.classList.contains('light-mode');
@@ -668,7 +1104,6 @@
       });
       if (response.ok) {
         form.style.display = 'none';
-        document.getElementById('waitlist-note').style.display = 'none';
         document.getElementById('wl-success').style.display = 'block';
       } else {
         btn.textContent = 'Send Enquiry';
