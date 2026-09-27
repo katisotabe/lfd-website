@@ -369,7 +369,7 @@
   .product-card-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .shop-featured-visual { overflow: hidden; }
   .shop-featured-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .product-modal-visual { overflow: hidden; }
+  .product-modal-visual { overflow: hidden; position: relative; }
   .product-modal-visual img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
   /* ─── PROJECT GALLERY CONTROLS ─── */
@@ -1259,7 +1259,7 @@
   const PRODUCTS = {
     'vr6-injectors': {
       name: '12V VR6 550cc Injectors',
-      image: 'assets/shop/vr6-injectors.jpg',
+      images: ['assets/shop/vr6-injectors.jpg', 'assets/shop/vr6-injectors-2.jpg'],
       price: 'R 2,200',
       status: '1 Set Available',
       description: '550cc injectors, ideal for custom performance builds and engine upgrades such as 12V VR6 setups.',
@@ -1273,7 +1273,7 @@
     },
     'formula-power-10mm-ht-leads-vr6': {
       name: 'Formula Power 10mm Race Performance HT Lead Set (VR6)',
-      image: 'assets/shop/formula-power-ht-leads.jpg',
+      images: ['assets/shop/formula-power-ht-leads-3.jpg', 'assets/shop/formula-power-ht-leads-1.jpg', 'assets/shop/formula-power-ht-leads-2.jpg'],
       price: 'R 1,800',
       status: '1 Set Available',
       description: 'Specifically configured for the 12V VR6 engine.',
@@ -1287,7 +1287,7 @@
     },
     'king-vr6-bearings': {
       name: 'King Racing Bearings (12V VR6)',
-      image: 'assets/shop/king-rod-bearings.jpg',
+      images: ['assets/shop/king-rod-bearings-3.jpg', 'assets/shop/king-rod-bearings-1.jpg', 'assets/shop/king-rod-bearings-2.jpg'],
       price: 'R 950',
       status: '1 Set Available',
       description: 'High-performance replacement connecting rod bearings designed for extreme load and high-RPM reliability in modified engine builds.',
@@ -1301,7 +1301,7 @@
     },
     'king-racing-vr6-main-bearings': {
       name: 'King Racing XP-Series Main Bearings (12V VR6)',
-      image: 'assets/shop/king-main-bearings.jpg',
+      images: ['assets/shop/king-main-bearings-2.jpg', 'assets/shop/king-main-bearings-1.jpg'],
       price: 'R 1,650',
       status: '1 Set Available',
       description: 'High-performance tri-metal main bearings engineered with pMaxBlack overlay for extreme load capacity, superior fatigue resistance, and enhanced oil clearance stability under high-boost or high-RPM operation.',
@@ -1316,6 +1316,7 @@
   };
 
   let currentProductId = null;
+  let currentProductImageIndex = 0;
   let productModalTriggerEl = null;
 
   function renderShopGrid() {
@@ -1323,10 +1324,11 @@
     if (!grid) return;
     grid.innerHTML = Object.keys(PRODUCTS).map(id => {
       const p = PRODUCTS[id];
+      const thumb = p.images && p.images[0];
       return `
         <button type="button" class="product-card" onclick="openProductModal('${id}')">
-          ${p.image
-            ? `<div class="product-card-visual"><img src="${p.image}" alt="${p.name}" loading="lazy" /></div>`
+          ${thumb
+            ? `<div class="product-card-visual"><img src="${thumb}" alt="${p.name}" loading="lazy" /></div>`
             : `<div class="project-visual-placeholder">
                  <div class="project-visual-icon">⚙</div>
                  <div class="project-visual-text">Product Photo</div>
@@ -1347,9 +1349,10 @@
     const featuredId = Object.keys(PRODUCTS).find(id => PRODUCTS[id].featured);
     if (!featuredId) { el.style.display = 'none'; return; }
     const p = PRODUCTS[featuredId];
+    const thumb = p.images && p.images[0];
     el.innerHTML = `
-      ${p.image
-        ? `<div class="shop-featured-visual"><img src="${p.image}" alt="${p.name}" loading="lazy" /></div>`
+      ${thumb
+        ? `<div class="shop-featured-visual"><img src="${thumb}" alt="${p.name}" loading="lazy" /></div>`
         : `<div class="shop-featured-visual project-visual-placeholder">
              <div class="project-visual-icon">⚙</div>
              <div class="project-visual-text">Product Photo</div>
@@ -1364,20 +1367,44 @@
     `;
   }
 
+  function renderProductModalImage() {
+    const p = PRODUCTS[currentProductId];
+    const modalVisual = document.getElementById('product-modal-visual');
+    const images = (p && p.images) || [];
+    if (!images.length) {
+      modalVisual.classList.add('project-visual-placeholder');
+      modalVisual.innerHTML = `<div class="project-visual-icon">⚙</div><div class="project-visual-text">Product Photo</div>`;
+      return;
+    }
+    modalVisual.classList.remove('project-visual-placeholder');
+    const multi = images.length > 1;
+    modalVisual.innerHTML = `
+      <img src="${images[currentProductImageIndex]}" alt="${p.name} — photo ${currentProductImageIndex + 1} of ${images.length}" />
+      ${multi ? `
+        <button type="button" class="gallery-arrow gallery-arrow-prev" aria-label="Previous photo" onclick="shiftProductModalImage(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l-7 7 7 7"/></svg></button>
+        <button type="button" class="gallery-arrow gallery-arrow-next" aria-label="Next photo" onclick="shiftProductModalImage(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5l7 7-7 7"/></svg></button>
+        <div class="gallery-dots">
+          ${images.map((_, i) => `<span class="gallery-dot${i === currentProductImageIndex ? ' active' : ''}"></span>`).join('')}
+        </div>
+      ` : ''}
+    `;
+  }
+
+  function shiftProductModalImage(dir) {
+    const p = PRODUCTS[currentProductId];
+    if (!p || !p.images || p.images.length < 2) return;
+    currentProductImageIndex = (currentProductImageIndex + dir + p.images.length) % p.images.length;
+    renderProductModalImage();
+  }
+
   function openProductModal(id) {
     const p = PRODUCTS[id];
     if (!p) return;
     currentProductId = id;
+    currentProductImageIndex = 0;
     productModalTriggerEl = document.activeElement;
 
-    const modalVisual = document.getElementById('product-modal-visual');
-    if (p.image) {
-      modalVisual.classList.remove('project-visual-placeholder');
-      modalVisual.innerHTML = `<img src="${p.image}" alt="${p.name}" />`;
-    } else {
-      modalVisual.classList.add('project-visual-placeholder');
-      modalVisual.innerHTML = `<div class="project-visual-icon">⚙</div><div class="project-visual-text">Product Photo</div>`;
-    }
+    renderProductModalImage();
     document.getElementById('product-modal-status').textContent = p.status;
     document.getElementById('product-modal-title-el').textContent = p.name;
     document.getElementById('product-modal-price').textContent = p.price;
