@@ -16,18 +16,18 @@
 <meta name="theme-color" content="#080808"/>
 
 <!-- Link preview / social sharing -->
-<meta name="description" content="LFD is an independent automotive fabrication and performance development workshop based in Brakpan, Gauteng. Custom fabrication, performance builds, and component sourcing — no shortcuts."/>
+<meta name="description" content="LFD is a custom automotive fabrication workshop in Brakpan, Gauteng, specialising in metal fabrication and performance development. Plus 3D-printed automotive parts designed in-house."/>
 <meta property="og:type" content="website"/>
 <meta property="og:site_name" content="LFD — Loksheen Fabrication & Development"/>
 <meta property="og:title" content="LFD — Loksheen Fabrication & Development"/>
-<meta property="og:description" content="Independent automotive fabrication and performance development. We don't take on every job — we take on the right ones."/>
+<meta property="og:description" content="Custom automotive fabrication and performance development, plus 3D-printed parts. If you know, you know."/>
 <meta property="og:url" content="https://lfd.ltd/"/>
 <meta property="og:image" content="https://lfd.ltd/assets/og-image.jpg"/>
 <meta property="og:image:width" content="1200"/>
 <meta property="og:image:height" content="630"/>
 <meta name="twitter:card" content="summary_large_image"/>
 <meta name="twitter:title" content="LFD — Loksheen Fabrication & Development"/>
-<meta name="twitter:description" content="Independent automotive fabrication and performance development. We don't take on every job — we take on the right ones."/>
+<meta name="twitter:description" content="Custom automotive fabrication and performance development, plus 3D-printed parts. If you know, you know."/>
 <meta name="twitter:image" content="https://lfd.ltd/assets/og-image.jpg"/>
 
 <!-- Structured data: ties this site to the same business across social profiles -->
@@ -593,6 +593,51 @@
   .product-buy-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); margin-bottom: 0; }
   .product-buy-row .wl-input { border: none; }
 
+
+  /* ─── 3D PRINTING ─── */
+  .print-hero { padding: 80px 48px 72px; border-bottom: 1px solid var(--border); position: relative; overflow: hidden; }
+  .print-hero::before {
+    content: '3D';
+    position: absolute; right: -10px; top: 50%; transform: translateY(-50%);
+    font-size: clamp(180px, 26vw, 360px); font-weight: 900; font-style: italic;
+    color: transparent; -webkit-text-stroke: 1.5px #2e2e2e; letter-spacing: -10px;
+    pointer-events: none; user-select: none; line-height: 1;
+  }
+  .print-hero > * { position: relative; }
+  #page-3d-printing .service-card { display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; }
+  #page-3d-printing .service-tag { margin-top: auto; }
+  #page-3d-printing .service-desc { margin-bottom: 28px; }
+  .print-hero .wl-submit { max-width: 280px; padding: 18px 32px; margin-top: 36px; }
+  .print-section-head { padding: 64px 48px 32px; }
+  .print-section-title { font-size: 28px; font-weight: 800; font-style: italic; letter-spacing: -0.5px; line-height: 1.1; }
+  .print-section-title em { color: var(--muted); }
+  .print-split {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+    padding: 64px 48px; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  }
+  .print-split-body { font-size: 14px; color: var(--text-muted); line-height: 1.8; margin-top: 20px; max-width: 460px; }
+  .print-specs { display: flex; flex-direction: column; gap: 1px; background: var(--border); }
+  .print-spec { background: var(--black); padding: 22px 28px; transition: background 0.2s; }
+  .print-spec:hover { background: var(--dim); }
+  .print-spec-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; margin-bottom: 8px; }
+  .print-spec-name { font-size: 15px; font-weight: 700; color: var(--white); }
+  .print-spec-use { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: #666; text-align: right; }
+  .print-spec-body { font-size: 12px; color: var(--text-muted); line-height: 1.7; }
+  .print-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--border); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .print-step { background: var(--black); padding: 40px 32px; }
+  .print-step-num { font-size: 11px; color: #333; font-weight: 700; letter-spacing: 0.1em; margin-bottom: 20px; }
+  .print-step-name { font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 12px; letter-spacing: -0.2px; }
+  .print-step-desc { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
+  .print-step-desc a { color: var(--white); }
+  .print-note {
+    padding: 64px 48px; border-bottom: 1px solid var(--border);
+    display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
+  }
+  .print-note-title { font-size: 28px; font-weight: 800; font-style: italic; letter-spacing: -0.5px; line-height: 1.1; }
+  .print-note-title em { color: var(--muted); }
+  .print-note-body { font-size: 14px; color: var(--text-muted); line-height: 1.8; }
+  .print-note-body strong { color: #888; font-weight: 600; }
+
   /* ══════════════════════ RESPONSIVE ══════════════════════ */
 
   /* Tablet / small laptop */
@@ -657,6 +702,80 @@
     .waitlist-form .wl-select, .wl-input { font-size: 12px; padding: 14px 16px; }
     .hero-body { font-size: 14px; }
   }
+
+  /* 3D printing page responsive */
+  @media (max-width: 960px) {
+    .print-hero, .print-section-head, .print-split, .print-note { padding-left: 28px; padding-right: 28px; }
+    .print-split, .print-note { grid-template-columns: 1fr; gap: 40px; align-items: start; }
+    .print-steps { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .print-hero, .print-section-head, .print-split, .print-note { padding-left: 20px; padding-right: 20px; }
+    .print-hero { padding-top: 56px; padding-bottom: 56px; }
+    .print-hero::before { display: none; }
+    .print-steps { grid-template-columns: 1fr; }
+    .print-step { padding: 32px 22px; }
+    .print-spec-head { flex-direction: column; gap: 4px; }
+    .print-spec-use { text-align: left; }
+  }
+
+  /* ─── 3D VIEWER ─── */
+  .print-viewer { display: grid; grid-template-columns: 5fr 7fr; gap: 64px; align-items: center; padding: 64px 48px; border-top: 1px solid var(--border); }
+  .viewer-facts { list-style: none; margin-top: 24px; display: flex; flex-direction: column; gap: 1px; background: var(--border); max-width: 460px; }
+  .viewer-facts li { background: var(--black); padding: 12px 16px; display: flex; justify-content: space-between; gap: 16px; font-size: 12px; color: var(--text-muted); }
+  .viewer-facts li span:last-child { color: var(--white); font-weight: 600; text-align: right; }
+  .viewer-hint { font-size: 11px; color: #666; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 16px; }
+  .viewer-stage-wrap { position: relative; }
+  .viewer-stage { position: relative; aspect-ratio: 4 / 3; background: #101010; border: 1px solid var(--border); overflow: hidden; }
+  .viewer-stage img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .viewer-stage canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; cursor: grab; touch-action: none; }
+  .viewer-stage canvas:active { cursor: grabbing; }
+  .viewer-play { z-index: 2; position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); background: #fff; color: #000; border: 0; font-family: inherit; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 14px 22px; cursor: pointer; white-space: nowrap; }
+  .viewer-play:hover { background: #ddd; }
+  .viewer-status { z-index: 2; position: absolute; left: 16px; top: 14px; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: #8a8a8a; pointer-events: none; }
+  .viewer-controls { z-index: 2; position: absolute; right: 12px; top: 10px; display: none; gap: 6px; }
+  .viewer-stage.live .viewer-controls { display: flex; }
+  .viewer-controls button { background: rgba(0,0,0,.55); color: #ccc; border: 1px solid #333; font-family: inherit; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 7px 10px; cursor: pointer; }
+  .viewer-controls button:hover { color: #fff; border-color: #666; }
+  /* keep the render dark in light mode: counter the page-wide inversion */
+  html.light-mode .viewer-stage-wrap { filter: invert(1) hue-rotate(180deg); }
+  .viewer-stage-wrap { transition: filter 0.25s ease; }
+  .about-do .channel-name { color: #aaa; }
+  @media (max-width: 900px) { .print-viewer { grid-template-columns: 1fr; gap: 32px; padding: 48px 28px; } }
+  @media (max-width: 600px) { .print-viewer { padding: 40px 20px; } .viewer-stage { aspect-ratio: 1 / 1; } }
+  /* 3D page: viewer is the page */
+  .print-hero { padding: 64px 48px 36px; border-bottom: 0; }
+  .print-viewer { display: block; padding: 0 48px 56px; border-top: 0; }
+  .viewer-stage { aspect-ratio: 16 / 9; max-height: 78vh; width: 100%; }
+  .viewer-caption { display: flex; justify-content: space-between; gap: 16px; padding-top: 14px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #666; }
+  @media (max-width: 900px) { .print-hero { padding: 48px 28px 28px; } .print-viewer { padding: 0 28px 40px; } }
+  @media (max-width: 600px) { .print-hero { padding: 40px 20px 24px; } .print-viewer { padding: 0 20px 32px; } .viewer-stage { aspect-ratio: 4 / 5; max-height: none; } .viewer-caption span:last-child { display: none; } }
+  .print-parts { padding: 64px 48px; border-top: 1px solid var(--border); }
+  .parts-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin-top: 32px; }
+  .part-card { background: var(--black); border: 0; padding: 0; text-align: left; font-family: inherit; color: inherit; cursor: pointer; display: flex; flex-direction: column; transition: background .2s; position: relative; }
+  .part-card:hover { background: var(--dim); }
+  .part-card img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; display: block; border-bottom: 1px solid var(--border); }
+  .part-meta { padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  .part-name { font-size: 16px; font-weight: 700; color: var(--white); letter-spacing: -0.2px; }
+  .part-sub { font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .part-tag { margin-top: auto; padding-top: 10px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: #777; }
+  .part-card.active { outline: 1px solid #666; outline-offset: -1px; }
+  .part-card.active .part-tag { color: var(--white); }
+  /* the thumbnails are dark renders: keep them dark in light mode */
+  html.light-mode .part-card img { filter: invert(1) hue-rotate(180deg); }
+  .part-card img { transition: filter .25s ease; }
+  .print-next { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; padding: 64px 48px; border-top: 1px solid var(--border); }
+  .print-need { list-style: none; margin: 24px 0 8px; display: flex; flex-direction: column; gap: 1px; background: var(--border); max-width: 460px; }
+  .print-need li { background: var(--black); padding: 16px 18px; display: flex; gap: 16px; font-size: 13px; color: var(--text-muted); line-height: 1.6; }
+  .print-need li strong { color: var(--white); font-weight: 600; }
+  .print-need-num { font-size: 11px; color: #444; font-weight: 700; letter-spacing: .1em; padding-top: 2px; }
+  .viewer-free { display: none; }
+  @media (pointer: coarse) { .viewer-free { display: inline-block; } .viewer-controls { flex-wrap: wrap; justify-content: flex-end; max-width: 80%; } }
+  .viewer-controls button[aria-label] { min-width: 30px; font-size: 14px; padding: 4px 9px; }
+  .about-mission { font-size: clamp(20px, 2.1vw, 26px); font-weight: 800; font-style: italic; letter-spacing: -0.4px; line-height: 1.3; color: var(--white); margin-bottom: 8px; }
+  @media (max-width: 900px) { .print-parts, .print-next { padding: 48px 28px; } .parts-grid { grid-template-columns: 1fr; } .print-next { grid-template-columns: 1fr; gap: 32px; } }
+  @media (max-width: 600px) { .print-parts, .print-next { padding: 40px 20px; } }
+  .about-handle { font-size: clamp(34px, 9vw, 96px); max-width: none; white-space: nowrap; }
 </style>
 </head>
 <body>
@@ -668,8 +787,8 @@
   <ul class="nav-links" id="nav-links">
     <li><button onclick="showPage('home')" id="nav-home" class="active">Home</button></li>
     <li><button onclick="showPage('services')" id="nav-services">Services</button></li>
+    <li><button onclick="showPage('3d-printing')" id="nav-3d-printing">3D Printing</button></li>
     <li><button onclick="showPage('projects')" id="nav-projects">Projects</button></li>
-    <li><button onclick="showPage('shop')" id="nav-shop">Shop</button></li>
     <li><button onclick="showPage('about')" id="nav-about">About</button></li>
   </ul>
   <div class="nav-right">
@@ -703,8 +822,8 @@
       <select class="wl-select" name="interest" required>
         <option value="">I'm interested in...</option>
         <option value="Custom Fabrication">Custom Fabrication</option>
-        <option value="Performance Build & Development">Performance Build &amp; Development</option>
-        <option value="Component Sourcing">Component Sourcing</option>
+        <option value="Performance Development">Performance Development</option>
+        <option value="3D Printing">3D Printing</option>
         <option value="General Enquiry">General Enquiry</option>
       </select>
       <textarea class="wl-textarea" name="message" placeholder="Tell us about the project — current state of the car, what you're after, timeline." required></textarea>
@@ -715,50 +834,6 @@
     <div class="wl-success" id="wl-success">
       <div class="wl-success-num">✓</div>
       <div class="wl-success-text">Enquiry received. We'll be in touch within 2 business days — no spam, no noise.</div>
-    </div>
-  </div>
-</div>
-
-<!-- ══ PRODUCT DETAIL MODAL ══ -->
-<div class="product-modal-backdrop" id="product-modal-backdrop" onclick="if(event.target===this) closeProductModal()">
-  <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="product-modal-title-el">
-    <button type="button" class="quote-modal-close" onclick="closeProductModal()" aria-label="Close">&times;</button>
-
-    <div class="product-modal-visual project-visual-placeholder" id="product-modal-visual">
-      <div class="project-visual-icon">⚙</div>
-      <div class="project-visual-text">Product Photo</div>
-    </div>
-
-    <div class="product-modal-body">
-      <div class="product-modal-status" id="product-modal-status">In Stock</div>
-      <div class="product-modal-title" id="product-modal-title-el">Part name</div>
-      <div class="product-modal-price" id="product-modal-price">R 0</div>
-
-      <div class="product-modal-section">
-        <div class="product-modal-label">Description</div>
-        <p class="product-modal-desc" id="product-modal-desc"></p>
-      </div>
-
-      <div class="product-modal-section">
-        <div class="product-modal-label">Specifications</div>
-        <ul class="product-modal-specs" id="product-modal-specs"></ul>
-      </div>
-
-      <form class="product-buy-form" id="product-buy-form" onsubmit="submitProductBuy(event)">
-        <input type="hidden" name="_subject" id="product-buy-subject" value="" />
-        <input type="hidden" name="product" id="product-buy-product" value="" />
-        <div class="product-buy-row">
-          <input class="wl-input" name="name" type="text" placeholder="Full name" required />
-          <input class="wl-input" name="email" type="email" placeholder="Email address" required />
-        </div>
-        <button type="submit" class="wl-submit">Buy Now</button>
-        <p class="product-modal-note">We'll confirm this fits before your payment link goes out. Leave your email and we'll follow up shortly.</p>
-      </form>
-
-      <div class="wl-success" id="product-buy-success" style="display:none;">
-        <div class="wl-success-num">✓</div>
-        <div class="wl-success-text">Got it — we'll email you a secure payment link shortly.</div>
-      </div>
     </div>
   </div>
 </div>
@@ -794,8 +869,8 @@
 <div class="page active" id="page-home">
   <div class="home-hero">
     <div class="hero-tag"><span class="hero-tag-dot"></span>Loksheen Fabrication &amp; Development</div>
-    <h1 class="hero-heading">Not for<br><em>everyone.</em></h1>
-    <p class="hero-body">LFD is an independent automotive fabrication and performance development workshop. We don't take on every job — we take on the right ones. If you know, you know.</p>
+    <h1 class="hero-heading">If you know,<br><em>you know.</em></h1>
+    <p class="hero-body">LFD is a custom automotive fabrication workshop in Brakpan. Got a car, an idea or a problem to solve? Tell us what you're after and we'll take it from there — no pressure, no jargon.</p>
 
     <button class="wl-submit" style="max-width:280px; padding:18px 32px;" onclick="openQuoteModal()">Request a Quote</button>
     <p class="waitlist-note">We'll reach out within 2 business days. No newsletters. No noise.</p>
@@ -819,7 +894,7 @@
   <div class="services-hero">
     <p class="page-eyebrow">What we do</p>
     <h1 class="page-title">The work<br><em>is the standard.</em></h1>
-    <p class="page-subtitle">Every job — from a single component to a complete platform build — is held to the same standard. We don't have a separate bar for "small" jobs.</p>
+    <p class="page-subtitle">Every job — from a single component to a full build — is held to the same standard. We don't have a separate bar for "small" jobs.</p>
   </div>
 
   <div class="services-grid">
@@ -829,17 +904,17 @@
       <div class="service-desc">Roll cages, boost pipes, custom control arms, subframes. If it needs to be measured, cut, and welded to fit a specific build — we build it in-house. No outsourcing, no compromise.</div>
       <div class="service-tag">Quote on request <span class="service-tag-arrow" aria-hidden="true">→</span></div>
     </button>
-    <button type="button" class="service-card" onclick="openQuoteModal('Performance Build & Development')">
+    <button type="button" class="service-card" onclick="openQuoteModal('Performance Development')">
       <div class="service-num">02</div>
-      <div class="service-name">Performance Builds &amp; Development</div>
-      <div class="service-desc">Focused platform builds, custom assembly, and the hands-on mechanical work required to make a proper car move. Built around a specific vision, not a generic spec sheet.</div>
+      <div class="service-name">Performance Development</div>
+      <div class="service-desc">Developing the parts a car needs to go racing. We work out what your build needs, then design and fabricate the pieces that get it there, built around your car and not a generic spec sheet.</div>
       <div class="service-tag">Consultation required <span class="service-tag-arrow" aria-hidden="true">→</span></div>
     </button>
-    <button type="button" class="service-card" onclick="openQuoteModal('Component Sourcing')">
+    <button type="button" class="service-card" onclick="showPage('3d-printing')">
       <div class="service-num">03</div>
-      <div class="service-name">Component Sourcing</div>
-      <div class="service-desc">Hard-to-find parts, specific platform components, and the right hardware to keep a build moving without shortcuts. We hunt down what you need so the momentum doesn't stop.</div>
-      <div class="service-tag">Get in touch <span class="service-tag-arrow" aria-hidden="true">→</span></div>
+      <div class="service-name">3D Printing</div>
+      <div class="service-desc">Small automotive parts, tools and jigs, printed to order. Take a look at one in 3D.</div>
+      <div class="service-tag">See it in 3D <span class="service-tag-arrow" aria-hidden="true">→</span></div>
     </button>
     <div class="service-card" style="display:flex; flex-direction:column; justify-content:space-between; cursor:default;">
       <div>
@@ -854,6 +929,82 @@
   <div class="services-cta">
     <div class="services-cta-text">Have a build in mind?<br><em>Let's talk.</em></div>
     <button class="nav-cta" style="padding:14px 28px; font-size:12px;" onclick="openQuoteModal()">Request Quote →</button>
+  </div>
+
+  <footer class="site-footer">
+    <div class="footer-brand">
+      <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
+      <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd · <button type="button" class="footer-privacy-link" onclick="openPrivacyModal()">Privacy</button></div>
+    </div>
+    <div class="footer-social">
+      <a href="https://www.instagram.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.tiktok.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3.5v11a3.5 3.5 0 1 1-3.5-3.5c.34 0 .67.04 1 .12"/><path d="M15 3.5c.4 2.4 2 4.2 4.3 4.6"/></svg></a>
+      <a href="https://www.facebook.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M14 8.3h-1.3A1.7 1.7 0 0 0 11 10v2m0 0H9.2m1.8 0v5.7"/></svg></a>
+      <a href="https://www.youtube.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10.3 9.6l5 2.4-5 2.4z" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.linkedin.com/company/loksheen-fabrication-and-development-pty-ltd/" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.1" cy="8.3" r="0.7" fill="currentColor" stroke="none"/><path d="M8.1 11v6M12 17v-4.2a2 2 0 0 1 4 0V17"/></svg></a>
+    </div>
+  </footer>
+</div>
+
+<!-- ══ 3D PRINTING ══ -->
+<div class="page" id="page-3d-printing">
+  <div class="print-hero">
+    <p class="page-eyebrow">3D Printing</p>
+    <h1 class="page-title">Built layer<br><em>by layer.</em></h1>
+    <p class="page-subtitle">We print small automotive parts, tools and jigs. Each one is designed in-house around the car it is going into, using real measurements and real mounting points, so it fits the way it should. Have a look at some below.</p>
+  </div>
+
+  <div class="print-viewer" id="viewer-section">
+    <div class="viewer-stage-wrap">
+      <div class="viewer-stage" id="viewer-stage">
+        <img src="assets/3d/poster-dark.jpg" alt="3D model of the Golf Mk3 ADU7 display mount" id="viewer-poster">
+        <span class="viewer-status" id="viewer-status"></span>
+        <div class="viewer-controls"><button type="button" onclick="LFDViewerUI.reset()">Reset</button><button type="button" onclick="LFDViewerUI.view(0,0)">Front</button><button type="button" onclick="LFDViewerUI.view(180,0)">Back</button><button type="button" id="viewer-free" class="viewer-free" onclick="LFDViewerUI.free()">Free rotate</button><button type="button" aria-label="Zoom out" onclick="LFDViewerUI.zoom(1.2)">&minus;</button><button type="button" aria-label="Zoom in" onclick="LFDViewerUI.zoom(0.83)">+</button></div>
+        <button type="button" class="viewer-play" id="viewer-play" onclick="LFDViewerUI.start()">▶ View in 3D · 360°</button>
+      </div>
+    </div>
+    <div class="viewer-caption"><span id="viewer-name">Golf Mk3 · ADU7 display mount</span><span>Drag to rotate · use + / − to zoom</span></div>
+  </div>
+
+  <div class="print-parts">
+    <div class="print-parts-head">
+      <p class="page-eyebrow">Designed in-house</p>
+      <div class="print-section-title">Parts we've made<br><em>so far.</em></div>
+    </div>
+    <div class="parts-grid">
+      <button type="button" class="part-card active" data-part="golf" onclick="LFDViewerUI.select('golf')">
+        <img src="assets/3d/card-golf-mk3-adu7.jpg" alt="Golf Mk3 ADU7 display mount" loading="lazy">
+        <div class="part-meta"><div class="part-name">Golf Mk3 · ADU7 display mount</div><div class="part-sub">Dash panel carrying an EcuMaster ADU7 display.</div><div class="part-tag">View in 3D <span aria-hidden="true">↑</span></div></div>
+      </button>
+      <button type="button" class="part-card" data-part="emu" onclick="LFDViewerUI.select('emu')">
+        <img src="assets/3d/card-emu-black-bracket.jpg" alt="EMU Black bracket" loading="lazy">
+        <div class="part-meta"><div class="part-name">EMU Black bracket</div><div class="part-sub">Vented mounting bracket for an EMU Black ECU.</div><div class="part-tag">View in 3D <span aria-hidden="true">↑</span></div></div>
+      </button>
+      <button type="button" class="part-card" data-part="cap" onclick="LFDViewerUI.select('cap')">
+        <img src="assets/3d/card-polo-56mm-centre-cap.jpg" alt="Polo 56 mm centre cap" loading="lazy">
+        <div class="part-meta"><div class="part-name">Polo · 56 mm centre cap</div><div class="part-sub">Smooth face out, LFD mark on the hidden side.</div><div class="part-tag">View in 3D <span aria-hidden="true">↑</span></div></div>
+      </button>
+    </div>
+  </div>
+
+  <div class="print-next">
+    <div>
+      <p class="page-eyebrow">In development</p>
+      <div class="print-section-title">More parts are<br><em>on the way.</em></div>
+    </div>
+    <div>
+      <p class="print-split-body" style="margin-top:0;">There are more parts in development and testing right now. If you have one in mind, all we need to get started is:</p>
+      <ul class="print-need">
+        <li><span class="print-need-num">01</span><span><strong>Measurements</strong> — or the original part, if you still have it.</span></li>
+        <li><span class="print-need-num">02</span><span><strong>Where it's going</strong> — the engine bay or the interior.</span></li>
+      </ul>
+      <p class="print-split-body">Then we take it from there.</p>
+    </div>
+  </div>
+
+  <div class="services-cta">
+    <div class="services-cta-text">Got a part in mind?<br><em>Send it over.</em></div>
+    <button class="nav-cta" style="padding:14px 28px; font-size:12px;" onclick="openQuoteModal('3D Printing', 'Part / what it is for: \nVehicle: \nQuantity: \n')">Request Quote →</button>
   </div>
 
   <footer class="site-footer">
@@ -920,7 +1071,7 @@
       <div class="project-info">
         <div class="project-status">Development</div>
         <div class="project-name">Subaru WRX STI</div>
-        <div class="project-desc">Performance development work on a WRX STI platform. Focused on extracting the right kind of power — built properly, not just built fast. Component sourcing, mechanical assembly, and tuning direction.</div>
+        <div class="project-desc">Development work on a WRX STI platform. Built properly, not just built fast: parts selection, fabrication and development direction.</div>
         <div class="project-tags">
           <span class="project-tag">Subaru</span>
           <span class="project-tag">EJ Platform</span>
@@ -960,35 +1111,35 @@
 <div class="page" id="page-about">
   <div class="about-hero">
     <p class="page-eyebrow">About LFD</p>
-    <h1 class="page-title" style="padding-bottom: 64px;">Built on<br><em>the work.</em></h1>
+    <h1 class="page-title about-handle" style="padding-bottom: 64px;">loksheen<em>racing</em></h1>
   </div>
 
   <div class="about-split">
     <div class="about-left">
       <div class="about-body">
-        <p>Loksheen Fabrication and Development started in a driveway in Brakpan, Gauteng — not as a business plan, but as a genuine obsession with doing things properly.</p>
-        <p>What began as weekend builds alongside my father grew into something more deliberate. A registered company. A set of standards. A belief that <strong>mechanical work done right is worth doing</strong> — and that the people building cars in this country deserve a workshop that takes the craft seriously. (No shade)</p>
-        <p>LFD is not a fast-turnaround shop. We take on limited work, give every build the full weight of our attention, and refuse to cut corners to hit a deadline. If that sounds like what you're looking for — we're probably the right fit.</p>
-        <p>We're based in Brakpan, Gauteng. We document the work. And we're only getting started.</p>
+        <p class="about-mission">To build really cool race cars at a reasonable cost, and to raise the safety standard of South African motorsport.</p>
+        <p>LFD exists because of a love of racing that started young. Nothing fancy: my father, the garage and the car. What began as an expensive hobby turned into a moment of "wait, I can actually do this for a living."</p>
+        <p>LFD is a custom automotive fabrication workshop specialising in metal fabrication and performance development. We serve the car enthusiast who wants to get into racing or motorsport, the underdog nobody is rooting for.</p>
+        <p>We deliver value by fabricating parts that are readily available here, at a fraction of the price of buying them from overseas, so really cool race cars can be built at a reasonable cost. And by building to MSA standards and aiming higher, to FIA standards and beyond.</p>
       </div>
     </div>
     <div class="about-right">
       <div class="about-pillars">
         <div class="pillar">
-          <div class="pillar-title">Independent</div>
-          <div class="pillar-body">No franchises, no shortcuts, no shareholders to answer to. Every decision is made in the interest of the build.</div>
+          <div class="pillar-title">Safety first</div>
+          <div class="pillar-body">Racing is dangerous enough. We build to MSA standards and aim higher, to FIA standards and beyond.</div>
         </div>
         <div class="pillar">
-          <div class="pillar-title">Hands-on</div>
-          <div class="pillar-body">The work is done by the people who care about it most. Not farmed out, not rushed, not compromised.</div>
+          <div class="pillar-title">One standard</div>
+          <div class="pillar-body">A small bracket and a full build are held to the same bar. If it isn't right, it doesn't leave the workshop.</div>
+        </div>
+        <div class="pillar">
+          <div class="pillar-title">Straight answers</div>
+          <div class="pillar-body">We tell you what will work, what won't, and what we'd do instead — including when the answer is that we're not the right fit.</div>
         </div>
         <div class="pillar">
           <div class="pillar-title">Documented</div>
-          <div class="pillar-body">Every build is recorded — on Instagram, on YouTube. The work speaks for itself and we're comfortable showing it.</div>
-        </div>
-        <div class="pillar">
-          <div class="pillar-title">Community-rooted</div>
-          <div class="pillar-body">Based in Brakpan. Building here. The goal is to create dignified, skilled work in the community we come from.</div>
+          <div class="pillar-body">The work is recorded on Instagram and YouTube. It speaks for itself, and we're comfortable showing it.</div>
         </div>
       </div>
     </div>
@@ -996,19 +1147,11 @@
 
   <div class="about-bottom">
     <div>
-      <div class="about-stats">
-        <div>
-          <div class="about-stat-num">VR6</div>
-          <div class="about-stat-label">Flagship Platform</div>
-        </div>
-        <div>
-          <div class="about-stat-num">GP</div>
-          <div class="about-stat-label">Brakpan, Gauteng</div>
-        </div>
-        <div>
-          <div class="about-stat-num">2026</div>
-          <div class="about-stat-label">Registered</div>
-        </div>
+      <p class="page-eyebrow" style="margin-bottom:16px;">What we do</p>
+      <div class="about-channels about-do">
+        <a class="channel" href="#" onclick="showPage('services');return false;"><span class="channel-name">Custom fabrication</span><span class="channel-arrow">→</span></a>
+        <a class="channel" href="#" onclick="showPage('services');return false;"><span class="channel-name">Performance development</span><span class="channel-arrow">→</span></a>
+        <a class="channel" href="#" onclick="showPage('3d-printing');return false;"><span class="channel-name">3D printing</span><span class="channel-arrow">→</span></a>
       </div>
     </div>
     <div>
@@ -1049,38 +1192,65 @@
   </footer>
 </div>
 
-<!-- ══ SHOP ══ -->
-<div class="page" id="page-shop">
-  <div class="shop-hero">
-    <p class="page-eyebrow">Shop</p>
-    <h1 class="page-title">Parts &amp;<br><em>components.</em></h1>
-    <p style="margin-top:24px; font-size:14px; color:var(--text-muted); max-width:520px; line-height:1.7;">Sourced and stocked hardware. Tap a part for specs — we'll confirm fitment and availability before anything is paid for.</p>
-  </div>
-
-  <div class="shop-featured" id="shop-featured"></div>
-
-  <div class="shop-grid" id="shop-grid"></div>
-  <div class="shop-request">
-    <p class="shop-request-text">Looking for something specific?</p>
-    <button type="button" class="shop-request-cta" onclick="openQuoteModal('Component Sourcing', 'Part(s) needed: \nVehicle / build: \n')">Tell us about your build</button>
-  </div>
-
-  <footer class="site-footer">
-    <div class="footer-brand">
-      <svg class="footer-logo" viewBox="0 0 1371 798" xmlns="http://www.w3.org/2000/svg"><path fill="#fff" d="M720.44,470.41l8.15-21.74c8.78-23.41,17.61-46.79,26.28-70.24.87-2.34,1.94-3.07,4.39-3.06,14.73.12,29.46.06,44.18.06h4.17c-7.41,19.88-14.67,39.36-21.9,58.78.32.27.47.51.61.5,11.15-.12,22.32.18,33.42-.52,13.45-.84,24-7.3,31.69-18.45,6.77-9.87,11.46-20.6,13.1-32.52,1.47-10.66-3-17.12-13.58-19.23a51.43,51.43,0,0,0-10-.9c-25.24-.06-50.47,0-75.7,0h-3.91c4.47-19.13,16.83-35,37.41-35.33,24.24-.4,48.5-.05,72.75.54A62.58,62.58,0,0,1,900.77,336c12.64,7.07,18.74,18.31,17.76,32.31-2.34,33.72-15.31,62.45-42.84,83.26-15,11.35-32.58,16.29-51.09,18.08-5.17.5-10.38.7-15.57.71q-42.4.11-84.8,0Z"/><path fill="#fff" d="M590,434.57c-4,10.59-7.66,20.51-11.4,30.41-2.05,5.44-2.09,5.43-7.9,5.43H452.36c1.84-5,3.52-9.63,5.26-14.26q23.25-61.81,46.53-123.63c1.86-5,1.88-5,7.28-5H557.5l-40.07,107Z"/><path fill="#fff" d="M586.65,470.2c.32-1.08.53-2,.86-2.88q16.83-44.81,33.63-89.62a3,3,0,0,1,3.26-2.31q55.85.08,111.71,0c.62,0,1.24.14,2.27.26-1.81,4.73-3.54,9.25-5.25,13.78-3.22,8.49-6.51,17-9.56,25.52-.81,2.26-2,2.84-4.22,2.83-19.49-.09-39,0-58.45-.11-2.36,0-3.35.74-4.14,2.92-5.73,15.64-11.61,31.22-17.42,46.83-.62,1.66-1.05,3-3.45,3-15.81-.13-31.61-.06-47.42-.07C588,470.4,587.45,470.29,586.65,470.2Z"/><path fill="#fff" d="M626.16,362.84c3.28-6.83,5.77-13.32,9.34-19.15,6.48-10.57,16.47-15.95,28.76-16,32.89-.23,65.79-.09,98.68-.09a8.14,8.14,0,0,1,1.12.18,12.72,12.72,0,0,1-.39,1.84c-3.8,10.24-7.65,20.46-11.42,30.7-.65,1.77-1.36,2.82-3.62,2.82q-59.71-.12-119.45-.05C628.55,363.06,627.92,363,626.16,362.84Z"/></svg>
-      <div class="footer-text">© 2026 Loksheen Fabrication and Development (Pty) Ltd · katiso@lfd.ltd · <button type="button" class="footer-privacy-link" onclick="openPrivacyModal()">Privacy</button></div>
-    </div>
-    <div class="footer-social">
-      <a href="https://www.instagram.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="0.9" fill="currentColor" stroke="none"/></svg></a>
-      <a href="https://www.tiktok.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 3.5v11a3.5 3.5 0 1 1-3.5-3.5c.34 0 .67.04 1 .12"/><path d="M15 3.5c.4 2.4 2 4.2 4.3 4.6"/></svg></a>
-      <a href="https://www.facebook.com/loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="9"/><path d="M14 8.3h-1.3A1.7 1.7 0 0 0 11 10v2m0 0H9.2m1.8 0v5.7"/></svg></a>
-      <a href="https://www.youtube.com/@loksheenracing" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true" focusable="false"><rect x="3" y="6" width="18" height="12" rx="4"/><path d="M10.3 9.6l5 2.4-5 2.4z" fill="currentColor" stroke="none"/></svg></a>
-      <a href="https://www.linkedin.com/company/loksheen-fabrication-and-development-pty-ltd/" target="_blank" rel="me noopener" class="social-icon" aria-label="LFD on LinkedIn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.1" cy="8.3" r="0.7" fill="currentColor" stroke="none"/><path d="M8.1 11v6M12 17v-4.2a2 2 0 0 1 4 0V17"/></svg></a>
-    </div>
-  </footer>
-</div>
-
 <script>
+  const LFDViewerUI = (() => {
+    const MODELS = {
+      golf: { src: 'assets/models/golf-mk3-adu7.glb', name: 'Golf Mk3 · ADU7 display mount', fit: 1 },
+      emu:  { src: 'assets/models/emu-black-bracket.glb', name: 'EMU Black bracket', fit: 1 },
+      cap:  { src: 'assets/models/polo-56mm-centre-cap.glb', name: 'Polo · 56 mm centre cap', fit: 0.62 }
+    };
+    let inst = null, loading = false, current = 'golf', loaded = null, freeOn = false;
+    const $ = id => document.getElementById(id);
+    function loadScript() {
+      return new Promise((res, rej) => {
+        if (window.LFDViewer) return res();
+        const el = document.createElement('script');
+        el.src = 'assets/js/lfd-viewer.js'; el.onload = res; el.onerror = rej; document.head.appendChild(el);
+      });
+    }
+    function mark(key) {
+      current = key;
+      document.querySelectorAll('.part-card').forEach(c => c.classList.toggle('active', c.dataset.part === key));
+      $('viewer-name').textContent = MODELS[key].name;
+    }
+    async function start(auto) {
+      if (inst || loading) return;
+      if (auto && navigator.connection && navigator.connection.saveData) return;
+      const btn = $('viewer-play'), stage = $('viewer-stage');
+      loading = true; btn.textContent = 'Loading…'; btn.disabled = true;
+      try {
+        await loadScript();
+        if (!window.LFDViewer.supported()) throw new Error('no webgl');
+        inst = await window.LFDViewer.create(stage, { autoRotate: true });
+        const m = MODELS[current];
+        await inst.loadModel(m.src, { fit: m.fit }); loaded = current;
+        stage.classList.add('live');
+        $('viewer-poster').style.display = 'none';
+        btn.style.display = 'none';
+        $('viewer-status').textContent = 'Drag to rotate';
+      } catch (e) {
+        inst = null;
+        btn.disabled = false; btn.textContent = '▶ View in 3D · 360°';
+        $('viewer-status').textContent = '3D view is not supported on this device';
+      }
+      loading = false;
+      if (inst && loaded !== current) select(current);
+    }
+    async function select(key) {
+      mark(key);
+      const stage = $('viewer-stage');
+      const r = stage.getBoundingClientRect();
+      if (r.top < 70 || r.bottom > window.innerHeight) stage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      if (!inst) { await start(); return; }
+      const m = MODELS[key];
+      $('viewer-status').textContent = 'Loading…';
+      try { await inst.loadModel(m.src, { fit: m.fit }); loaded = key; $('viewer-status').textContent = 'Drag to rotate'; }
+      catch (e) { $('viewer-status').textContent = 'Could not load this model'; }
+    }
+    function free() { if (!inst) return; freeOn = !freeOn; inst.freeTouch(freeOn); const b = $('viewer-free'); b.textContent = freeOn ? 'Scroll page' : 'Free rotate'; $('viewer-status').textContent = freeOn ? 'Drag any direction' : 'Drag to rotate'; }
+    return { start, select, free, reset: () => inst && inst.reset(), zoom: f => inst && inst.zoom(f), view: (a, e) => inst && inst.setView(a, e) };
+  })();
+
   function showPage(name) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
@@ -1088,6 +1258,7 @@
     document.getElementById('nav-' + name).classList.add('active');
     window.scrollTo(0, 0);
     closeMobileMenu();
+    if (name === '3d-printing') LFDViewerUI.start(true);
   }
 
   function toggleTheme() {
@@ -1254,226 +1425,13 @@
     if (quoteModalTriggerEl) { quoteModalTriggerEl.focus(); quoteModalTriggerEl = null; }
   }
 
-  // ─── SHOP / PRODUCTS ───
-  // Placeholder catalog — swap in real names, prices, specs, and photos before this goes live.
-  const PRODUCTS = {
-    'vr6-injectors': {
-      name: '12V VR6 550cc Injectors',
-      images: ['assets/shop/vr6-injectors.jpg', 'assets/shop/vr6-injectors-2.jpg'],
-      price: 'R 2,200',
-      status: '1 Set Available',
-      description: '550cc injectors, ideal for custom performance builds and engine upgrades such as 12V VR6 setups.',
-      specs: [
-        ['Brand', 'Aftermarket'],
-        ['Material', 'Hardened steel/metal center section with durable composite plastic top and lower nozzle sections'],
-        ['Includes', 'Pintle caps / lower seals'],
-        ['Fits', 'VR6 12v'],
-        ['Condition', 'Used']
-      ]
-    },
-    'formula-power-10mm-ht-leads-vr6': {
-      name: 'Formula Power 10mm Race Performance HT Lead Set (VR6)',
-      images: ['assets/shop/formula-power-ht-leads-3.jpg', 'assets/shop/formula-power-ht-leads-1.jpg', 'assets/shop/formula-power-ht-leads-2.jpg'],
-      price: 'R 1,800',
-      status: '1 Set Available',
-      description: 'Specifically configured for the 12V VR6 engine.',
-      specs: [
-        ['Brand', 'Formula Power'],
-        ['Material', '10mm heavy-duty blue silicone race leads, low resistance design, with heavy-duty metal boots for superior heat shielding and spark delivery'],
-        ['Includes', 'Original pamphlets with instructions'],
-        ['Fits', 'VR6 12v'],
-        ['Condition', 'New']
-      ]
-    },
-    'king-vr6-bearings': {
-      name: 'King Racing Bearings (12V VR6)',
-      images: ['assets/shop/king-rod-bearings-3.jpg', 'assets/shop/king-rod-bearings-1.jpg', 'assets/shop/king-rod-bearings-2.jpg'],
-      price: 'R 950',
-      status: '1 Set Available',
-      description: 'High-performance replacement connecting rod bearings designed for extreme load and high-RPM reliability in modified engine builds.',
-      specs: [
-        ['Brand', 'King Racing'],
-        ['Material', 'Bi-metal / high-strength aluminium-silicon alloy construction'],
-        ['Includes', 'Full set of connecting rod bearing inserts'],
-        ['Fits', 'VR6 12v'],
-        ['Condition', 'New']
-      ]
-    },
-    'king-racing-vr6-main-bearings': {
-      name: 'King Racing XP-Series Main Bearings (12V VR6)',
-      images: ['assets/shop/king-main-bearings-2.jpg', 'assets/shop/king-main-bearings-1.jpg'],
-      price: 'R 1,650',
-      status: '1 Set Available',
-      description: 'High-performance tri-metal main bearings engineered with pMaxBlack overlay for extreme load capacity, superior fatigue resistance, and enhanced oil clearance stability under high-boost or high-RPM operation.',
-      specs: [
-        ['Brand', 'King Racing'],
-        ['Material', 'Tri-metal composite (copper-lead base with high-strength overlay)'],
-        ['Includes', 'Complete set of main bearing inserts and product sticker'],
-        ['Fits', 'VR6 12v'],
-        ['Condition', 'New']
-      ]
-    }
-  };
-
-  let currentProductId = null;
-  let currentProductImageIndex = 0;
-  let productModalTriggerEl = null;
-
-  function renderShopGrid() {
-    const grid = document.getElementById('shop-grid');
-    if (!grid) return;
-    grid.innerHTML = Object.keys(PRODUCTS).map(id => {
-      const p = PRODUCTS[id];
-      const thumb = p.images && p.images[0];
-      return `
-        <button type="button" class="product-card" onclick="openProductModal('${id}')">
-          ${thumb
-            ? `<div class="product-card-visual"><img src="${thumb}" alt="${p.name}" loading="lazy" /></div>`
-            : `<div class="project-visual-placeholder">
-                 <div class="project-visual-icon">⚙</div>
-                 <div class="project-visual-text">Product Photo</div>
-               </div>`}
-          <div class="product-card-info">
-            <div class="product-card-name">${p.name}</div>
-            <div class="product-card-price">${p.price}</div>
-            <div class="product-card-cta">Buy Now <span aria-hidden="true">→</span></div>
-          </div>
-        </button>
-      `;
-    }).join('');
-  }
-
-  function renderFeaturedProduct() {
-    const el = document.getElementById('shop-featured');
-    if (!el) return;
-    const featuredId = Object.keys(PRODUCTS).find(id => PRODUCTS[id].featured);
-    if (!featuredId) { el.style.display = 'none'; return; }
-    const p = PRODUCTS[featuredId];
-    const thumb = p.images && p.images[0];
-    el.innerHTML = `
-      ${thumb
-        ? `<div class="shop-featured-visual"><img src="${thumb}" alt="${p.name}" loading="lazy" /></div>`
-        : `<div class="shop-featured-visual project-visual-placeholder">
-             <div class="project-visual-icon">⚙</div>
-             <div class="project-visual-text">Product Photo</div>
-           </div>`}
-      <div class="shop-featured-body">
-        <div class="shop-featured-eyebrow">From the Shop</div>
-        <div class="shop-featured-headline">${p.headline || p.name}</div>
-        <p class="shop-featured-desc">${p.description}</p>
-        <div class="shop-featured-price">${p.price}</div>
-        <button type="button" class="shop-featured-cta" onclick="openProductModal('${featuredId}')">Buy Now</button>
-      </div>
-    `;
-  }
-
-  function renderProductModalImage() {
-    const p = PRODUCTS[currentProductId];
-    const modalVisual = document.getElementById('product-modal-visual');
-    const images = (p && p.images) || [];
-    if (!images.length) {
-      modalVisual.classList.add('project-visual-placeholder');
-      modalVisual.innerHTML = `<div class="project-visual-icon">⚙</div><div class="project-visual-text">Product Photo</div>`;
-      return;
-    }
-    modalVisual.classList.remove('project-visual-placeholder');
-    const multi = images.length > 1;
-    modalVisual.innerHTML = `
-      <img src="${images[currentProductImageIndex]}" alt="${p.name} — photo ${currentProductImageIndex + 1} of ${images.length}" />
-      ${multi ? `
-        <button type="button" class="gallery-arrow gallery-arrow-prev" aria-label="Previous photo" onclick="shiftProductModalImage(-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 5l-7 7 7 7"/></svg></button>
-        <button type="button" class="gallery-arrow gallery-arrow-next" aria-label="Next photo" onclick="shiftProductModalImage(1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 5l7 7-7 7"/></svg></button>
-        <div class="gallery-dots">
-          ${images.map((_, i) => `<span class="gallery-dot${i === currentProductImageIndex ? ' active' : ''}"></span>`).join('')}
-        </div>
-      ` : ''}
-    `;
-  }
-
-  function shiftProductModalImage(dir) {
-    const p = PRODUCTS[currentProductId];
-    if (!p || !p.images || p.images.length < 2) return;
-    currentProductImageIndex = (currentProductImageIndex + dir + p.images.length) % p.images.length;
-    renderProductModalImage();
-  }
-
-  function openProductModal(id) {
-    const p = PRODUCTS[id];
-    if (!p) return;
-    currentProductId = id;
-    currentProductImageIndex = 0;
-    productModalTriggerEl = document.activeElement;
-
-    renderProductModalImage();
-    document.getElementById('product-modal-status').textContent = p.status;
-    document.getElementById('product-modal-title-el').textContent = p.name;
-    document.getElementById('product-modal-price').textContent = p.price;
-    document.getElementById('product-modal-desc').textContent = p.description;
-    document.getElementById('product-modal-specs').innerHTML = p.specs.map(
-      ([label, value]) => `<li><span>${label}</span><span>${value}</span></li>`
-    ).join('');
-
-    // reset the buy form to a fresh state each time a product is opened
-    const form = document.getElementById('product-buy-form');
-    form.reset();
-    form.style.display = 'flex';
-    document.getElementById('product-buy-success').style.display = 'none';
-    document.getElementById('product-buy-subject').value = `Buy Now: ${p.name}`;
-    document.getElementById('product-buy-product').value = `${p.name} — ${p.price}`;
-
-    const backdrop = document.getElementById('product-modal-backdrop');
-    backdrop.classList.add('open');
-    document.body.classList.add('modal-open');
-    closeMobileMenu();
-    setTimeout(() => document.querySelector('#product-modal-backdrop .quote-modal-close').focus(), 50);
-  }
-
-  function closeProductModal() {
-    document.getElementById('product-modal-backdrop').classList.remove('open');
-    document.body.classList.remove('modal-open');
-    if (productModalTriggerEl) { productModalTriggerEl.focus(); productModalTriggerEl = null; }
-  }
-
-  async function submitProductBuy(e) {
-    e.preventDefault();
-    const form = document.getElementById('product-buy-form');
-    const data = new FormData(form);
-    const btn = form.querySelector('.wl-submit');
-    btn.textContent = 'Sending...';
-    btn.style.opacity = '0.6';
-    try {
-      const response = await fetch('https://formspree.io/f/xqpzerkz', {
-        method: 'POST', body: data, headers: { 'Accept': 'application/json' }
-      });
-      if (response.ok) {
-        form.style.display = 'none';
-        document.getElementById('product-buy-success').style.display = 'block';
-      } else {
-        btn.textContent = 'Buy Now';
-        btn.style.opacity = '1';
-        alert('Something went wrong. Email us directly at katiso@lfd.ltd');
-      }
-    } catch (err) {
-      btn.textContent = 'Buy Now';
-      btn.style.opacity = '1';
-      alert('Something went wrong. Email us directly at katiso@lfd.ltd');
-    }
-  }
-
-  document.addEventListener('DOMContentLoaded', function() {
-    renderShopGrid();
-    renderFeaturedProduct();
-  });
-
   document.addEventListener('keydown', function(e) {
     const lightboxOpen = document.getElementById('lightbox-backdrop').classList.contains('open');
     const privacyOpen = document.getElementById('privacy-modal-backdrop').classList.contains('open');
-    const productOpen = document.getElementById('product-modal-backdrop').classList.contains('open');
 
     if (e.key === 'Escape') {
       if (lightboxOpen) closeLightbox();
       else if (privacyOpen) closePrivacyModal();
-      else if (productOpen) closeProductModal();
       else closeQuoteModal();
     }
 
@@ -1481,7 +1439,7 @@
     if (lightboxOpen && e.key === 'ArrowRight') lightboxShift(1);
 
     if (e.key === 'Tab') {
-      const backdropId = lightboxOpen ? 'lightbox-backdrop' : (privacyOpen ? 'privacy-modal-backdrop' : (productOpen ? 'product-modal-backdrop' : 'quote-modal-backdrop'));
+      const backdropId = lightboxOpen ? 'lightbox-backdrop' : (privacyOpen ? 'privacy-modal-backdrop' : 'quote-modal-backdrop');
       const backdrop = document.getElementById(backdropId);
       if (!backdrop.classList.contains('open')) return;
       const focusables = Array.from(backdrop.querySelectorAll('button, input, select, textarea, [href]'))
